@@ -15,7 +15,97 @@ namespace Modelo
             droguerias = new List<Drogueria>();
             Recuperar();
         }
+        private static readonly Lazy<RepositorioDroguerias> _instance = new(() => new RepositorioDroguerias());
+        public static RepositorioDroguerias Instance => _instance.Value;
+        public bool Agregar(Drogueria drogueria)
+        {
+            var estaInsertado = false;
+            connection.Open();
+            var transaction = connection.BeginTransaction();
+            try
+            {
+                using var sqlCommand = new SqlCommand();
+                sqlCommand.Transaction = transaction;
+                sqlCommand.Connection = connection;
+                sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlCommand.CommandText = "sp_InsertarDrogueria";
+                sqlCommand.Parameters.Add("@cuit", System.Data.SqlDbType.Decimal).Value = drogueria.Cuit;
+                sqlCommand.Parameters.Add("@RazonSocial", System.Data.SqlDbType.NVarChar, 150).Value = drogueria.RazonSocial;
+                sqlCommand.Parameters.Add("@Direccion", System.Data.SqlDbType.NVarChar, 150).Value = drogueria.Direccion;
+                sqlCommand.Parameters.Add("@email", System.Data.SqlDbType.NVarChar, 150).Value = drogueria.Email;
+                sqlCommand.ExecuteNonQuery();
+                transaction.Commit();
+                connection.Close();
 
+                categorias.Add(Drogueria);
+                estaInsertado = true;
+            }
+            {
+                transaction.Rollback();
+                connection.Close();
+            }
+            return estaInsertado;
+        }
+
+        public bool Eliminar(Drogueria drogueria)
+        {
+            var estaEliminado = false;
+            connection.Open();
+            var transaction = connection.BeginTransaction();
+            try
+            {
+                using var sqlCommand = new SqlCommand();
+                sqlCommand.Transaction = transaction;
+                sqlCommand.Connection = connection;
+                sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlCommand.CommandText = "sp_EliminarDrogueria";
+                sqlCommand.Parameters.Add("@cuit", System.Data.SqlDbType.Decimal).Value = drogueria.Cuit;
+                sqlCommand.ExecuteNonQuery();
+                transaction.Commit();
+                connection.Close();
+
+                droguerias.Remove(drogueria);
+                estaEliminado = true;
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                connection.Close();
+            }
+            return estaEliminado;
+        }
+
+        public bool Modificar(Drogueria drogueria)
+        {
+            var estaModificado = false;
+            connection.Open();
+            var transaction = connection.BeginTransaction();
+            try
+            {
+                using var sqlCommand = new SqlCommand();
+                sqlCommand.Transaction = transaction;
+                sqlCommand.Connection = connection;
+                sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlCommand.CommandText = "sp_ModificarDrogueria";
+                sqlCommand.Parameters.Add("@cuit", System.Data.SqlDbType.Decimal).Value = drogueria.Cuit;
+                sqlCommand.Parameters.Add("@RazonSocial", System.Data.SqlDbType.NVarChar, 150).Value = drogueria.RazonSocial;
+                sqlCommand.Parameters.Add("@Direccion", System.Data.SqlDbType.NVarChar, 150).Value = drogueria.Direccion;
+                sqlCommand.Parameters.Add("@email", System.Data.SqlDbType.NVarChar, 150).Value = drogueria.Email;
+                sqlCommand.ExecuteNonQuery();
+                transaction.Commit();
+                connection.Close();
+
+                droguerias.Remove(Drogueria);
+                droguerias.Add(Drogueria);
+                estaModificado = true;
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                connection.Close();
+            }
+            return estaModificado;
+        }
         private void Recuperar()
         {
             using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
@@ -23,12 +113,12 @@ namespace Modelo
             try
             {
                 using var command = new SqlCommand();
-                //otra forma de hacerlo es usando Store Procedures
-                command.CommandText = "SP_RECUPERARDROGUERIAS";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                /////////////////////////
-                command.Connection = connection;
-                command.Connection.Open();
+                    //otra forma de hacerlo es usando Store Procedures
+                    SqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlCommand.CommandText = "SP_RECUPERARDROGUERIAS";
+                        /////////////////////////
+                SqlCommand.Connection = connection;
+                SqlCommand.Connection.Open();
                 var reader = command.ExecuteReader();
                 while (reader.Read())//lee a traves de todas las filas que existen en la tabla
                 {
@@ -55,6 +145,11 @@ namespace Modelo
 
         }
 
+        public ReadOnlyCollection<Drogueria> Listar()
+        {
+            return droguerias.AsReadOnly();
+        }
+
         public static RepositorioDroguerias Instancia
         {
             get
@@ -70,3 +165,4 @@ namespace Modelo
         }
     }
 }
+
