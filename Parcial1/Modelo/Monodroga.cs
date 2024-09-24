@@ -8,6 +8,7 @@ namespace Modelo
 {
     public class Monodroga
     {
+        public int Id { get; set; }
         public string Nombre { get; set; }
  
     }
