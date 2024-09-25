@@ -6,61 +6,53 @@ namespace Modelo
 {
     public class RepositorioMonodrogas
     {
-        private static RepositorioMonodrogas instancia;
-        private List<Monodroga> monodrogas;
-        private IConfigurationRoot configuration;
+        private readonly List<Monodroga> monodrogas;
+        private readonly SqlConnection connection;
+
         private RepositorioMonodrogas()
         {
-            configuration = ConfigurationHelper.GetConfiguration("appsettings.json");
             monodrogas = new List<Monodroga>();
+            var connectionString = ConnectionString.GetConnectionString();
+            connection = new SqlConnection(connectionString);
             Recuperar();
+
+
+
+        }
+
+        private static readonly Lazy<RepositorioMonodrogas> instance = new(() => new RepositorioMonodrogas());
+
+       
+        public static RepositorioMonodrogas Instance => instance.Value;
+        public ReadOnlyCollection<Monodroga> Listar()
+        {
+            return monodrogas.AsReadOnly();
         }
 
         private void Recuperar()
         {
-            using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
+            connection.Open();
             try
             {
-                using var command = new SqlCommand();
-                //otra forma de hacerlo es usando Store Procedures
-                command.CommandText = "SP_RECUPERARMONODROGAS";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                /////////////////////////
-                command.Connection = connection;
-                command.Connection.Open();
-                var reader = command.ExecuteReader();
-                while (reader.Read())
+                using var sqlcommand = new SqlCommand();
+                sqlcommand.Connection = connection;
+                sqlcommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlcommand.CommandText = "SP_RECUPERARMONODROGAS";
+                var dr = sqlcommand.ExecuteReader();
+                while (dr.Read())
                 {
                     var monodroga = new Monodroga();
-                    monodroga.Nombre = reader["NOMBRE"].ToString();
+                    monodroga.Nombre = dr["NOMBRE"].ToString();
                     monodrogas.Add(monodroga);
+
                 }
-                command.Connection.Close();
-            }
-            catch (SqlException ex)
-            {
-                connection.Close();
-                connection.Dispose();
+                sqlcommand.Connection.Close();
             }
             catch (Exception ex)
             {
                 connection.Close();
-                connection.Dispose();
             }
         }
 
-        public static RepositorioMonodrogas Instancia
-        { 
-            get 
-            {
-                instancia ??= new RepositorioMonodrogas();
-                return instancia;
-            }
-        }
-
-        public ReadOnlyCollection<Monodroga> Monodrogas
-        { 
-            get => monodrogas.AsReadOnly(); 
-        }
     }
 }

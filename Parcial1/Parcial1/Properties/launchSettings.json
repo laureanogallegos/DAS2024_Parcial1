@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Parcial1": {
+      "commandName": "Project",
+      "sqlDebugging": true,
+      "nativeDebugging": true
+    }
+  }
+}

@@ -6,67 +6,57 @@ namespace Modelo
 {
     public class RepositorioDroguerias
     {
-        private static RepositorioDroguerias instancia;
-        private List<Drogueria> droguerias;
-        private IConfigurationRoot configuration;
+        private readonly List<Drogueria> droguerias;
+        private readonly SqlConnection connection;
+
         private RepositorioDroguerias()
         {
-            configuration = ConfigurationHelper.GetConfiguration("appsettings.json");
             droguerias = new List<Drogueria>();
+            var connectionString = ConnectionString.GetConnectionString();
+            connection = new SqlConnection(connectionString);
             Recuperar();
+
+
+
+        }
+
+        private static readonly Lazy<RepositorioDroguerias> instance = new(() => new RepositorioDroguerias());
+
+        // Step 3: Provide a public static method to get the instance of the class
+        public static RepositorioDroguerias Instance => instance.Value;
+        public ReadOnlyCollection<Drogueria> Listar()
+        {
+            return droguerias.AsReadOnly();
         }
 
         private void Recuperar()
         {
-            using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
-
+            connection.Open();
             try
             {
-                using var command = new SqlCommand();
-                //otra forma de hacerlo es usando Store Procedures
-                command.CommandText = "SP_RECUPERARDROGUERIAS";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                /////////////////////////
-                command.Connection = connection;
-                command.Connection.Open();
-                var reader = command.ExecuteReader();
-                while (reader.Read())//lee a traves de todas las filas que existen en la tabla
+                using var sqlcommand = new SqlCommand();
+                sqlcommand.Connection = connection;
+                sqlcommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlcommand.CommandText = "SP_RECUPERARDROGUERIAS";
+                var dr = sqlcommand.ExecuteReader();
+                while (dr.Read())
                 {
-                    //por cada fila que creo tengo que asignar manualmente cada columna con cada propiedad
                     var drogueria = new Drogueria();
-                    drogueria.Cuit = Convert.ToInt64(reader["CUIT"].ToString());
-                    drogueria.RazonSocial = reader["RAZON_SOCIAL"].ToString();
-                    drogueria.Direccion = reader["DIRECCION"].ToString();
-                    drogueria.Email = reader["EMAIL"].ToString();
+                    drogueria.Cuit = Convert.ToInt64(dr["CUIT"].ToString());
+                    drogueria.RazonSocial = dr["RAZON_SOCIAL"].ToString();
+                    drogueria.Direccion = dr["DIRECCION"].ToString();
+                    drogueria.Email = dr["EMAIL"].ToString();
                     droguerias.Add(drogueria);
+
                 }
-                command.Connection.Close();
-            }
-            catch (SqlException ex)
-            {
-                connection.Close();
-                connection.Dispose();
+                sqlcommand.Connection.Close();
             }
             catch (Exception ex)
             {
                 connection.Close();
-                connection.Dispose();
-            }
-
-        }
-
-        public static RepositorioDroguerias Instancia
-        {
-            get
-            {
-                instancia ??= new RepositorioDroguerias();
-                return instancia;
             }
         }
 
-        public ReadOnlyCollection<Drogueria> Droguerias
-        {
-            get => droguerias.AsReadOnly();
-        }
+
     }
 }
