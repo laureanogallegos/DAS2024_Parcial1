@@ -62,5 +62,10 @@ namespace Modelo
         { 
             get => monodrogas.AsReadOnly(); 
         }
+
+        public ReadOnlyCollection<Monodroga> Listar()
+        {
+            return monodrogas.AsReadOnly();
+        }
     }
 }

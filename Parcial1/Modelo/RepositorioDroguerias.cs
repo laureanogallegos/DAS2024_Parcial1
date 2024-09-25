@@ -20,38 +20,38 @@ namespace Modelo
         {
             using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
 
-            try
-            {
-                using var command = new SqlCommand();
-                //otra forma de hacerlo es usando Store Procedures
-                command.CommandText = "SP_RECUPERARDROGUERIAS";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                /////////////////////////
-                command.Connection = connection;
-                command.Connection.Open();
-                var reader = command.ExecuteReader();
-                while (reader.Read())//lee a traves de todas las filas que existen en la tabla
+                try
                 {
-                    //por cada fila que creo tengo que asignar manualmente cada columna con cada propiedad
-                    var drogueria = new Drogueria();
-                    drogueria.Cuit = Convert.ToInt64(reader["CUIT"].ToString());
-                    drogueria.RazonSocial = reader["RAZON_SOCIAL"].ToString();
-                    drogueria.Direccion = reader["DIRECCION"].ToString();
-                    drogueria.Email = reader["EMAIL"].ToString();
-                    droguerias.Add(drogueria);
+                    using var command = new SqlCommand();
+                    //otra forma de hacerlo es usando Store Procedures
+                    command.CommandText = "SP_RECUPERARDROGUERIAS";
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    /////////////////////////
+                    command.Connection = connection;
+                    command.Connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())//lee a traves de todas las filas que existen en la tabla
+                    {
+                        //por cada fila que creo tengo que asignar manualmente cada columna con cada propiedad
+                        var drogueria = new Drogueria();
+                        drogueria.Cuit = Convert.ToInt64(reader["CUIT"].ToString());
+                        drogueria.RazonSocial = reader["RAZON_SOCIAL"].ToString();
+                        drogueria.Direccion = reader["DIRECCION"].ToString();
+                        drogueria.Email = reader["EMAIL"].ToString();
+                        droguerias.Add(drogueria);
+                    }
+                    command.Connection.Close();
                 }
-                command.Connection.Close();
-            }
-            catch (SqlException ex)
-            {
-                connection.Close();
-                connection.Dispose();
-            }
-            catch (Exception ex)
-            {
-                connection.Close();
-                connection.Dispose();
-            }
+                catch (SqlException ex)
+                {
+                    connection.Close();
+                    connection.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    connection.Close();
+                    connection.Dispose();
+                }
 
         }
 
@@ -67,6 +67,11 @@ namespace Modelo
         public ReadOnlyCollection<Drogueria> Droguerias
         {
             get => droguerias.AsReadOnly();
+        } 
+
+        public ReadOnlyCollection<Drogueria> Listar()
+        {
+            return droguerias.AsReadOnly();
         }
     }
 }
