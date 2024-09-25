@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelo
+namespace Controladora
 {
-    public class Monodroga
+    public class ControladoraMedicamentosDroguerias
     {
-        public string Nombre { get; set; }
+
     }
 }
