@@ -16,6 +16,11 @@ namespace Modelo
             Recuperar();
         }
 
+        public ReadOnlyCollection<Monodroga> ListarMonodroga()
+        {
+            return RepositorioMonodrogas.Instancia.ListarMonodroga();
+        }
+
         private void Recuperar()
         {
             using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))

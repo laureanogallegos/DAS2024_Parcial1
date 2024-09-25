@@ -16,6 +16,10 @@ namespace Modelo
             Recuperar();
         }
 
+        public ReadOnlyCollection<Drogueria> ListarDrogueria()
+        {
+            return droguerias.AsReadOnly();
+        }
         private void Recuperar()
         {
             using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
