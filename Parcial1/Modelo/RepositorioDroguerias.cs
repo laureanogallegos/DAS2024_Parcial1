@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
+using System.Transactions;
 
 namespace Modelo
 {
@@ -15,6 +16,7 @@ namespace Modelo
             droguerias = new List<Drogueria>();
             Recuperar();
         }
+        
 
         private void Recuperar()
         {
@@ -26,6 +28,11 @@ namespace Modelo
                 //otra forma de hacerlo es usando Store Procedures
                 command.CommandText = "SP_RECUPERARDROGUERIAS";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+              /*  command.Parameters.Add("@CUIT",System.Data.SqlDbType.BigInt);
+                command.Parameters.Add("@RAZON_SOCIAL", System.Data.SqlDbType.NVarChar, 50);
+                command.Parameters.Add("@DIRECCION", System.Data.SqlDbType.NVarChar, 50);
+                command.Parameters.Add("@EMAIL", System.Data.SqlDbType.NVarChar, 50);*/
+
                 /////////////////////////
                 command.Connection = connection;
                 command.Connection.Open();
@@ -59,7 +66,10 @@ namespace Modelo
         {
             get
             {
-                instancia ??= new RepositorioDroguerias();
+                if (instancia == null)
+                {
+                    instancia = new RepositorioDroguerias();
+                }                
                 return instancia;
             }
         }
@@ -67,6 +77,12 @@ namespace Modelo
         public ReadOnlyCollection<Drogueria> Droguerias
         {
             get => droguerias.AsReadOnly();
+        }
+        public bool AgregarDrogueria(Drogueria drogueria)
+        {
+            using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
+
+                
         }
     }
 }
