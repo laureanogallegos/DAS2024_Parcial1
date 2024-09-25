@@ -50,5 +50,20 @@ namespace Pruebavista
             dgvMedicamentos.DataSource = null;
             dgvMedicamentos.DataSource = Controladora.ControladoraMedicamentos.Instancia.ListarMedicamentos();
         }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            if (dgvMedicamentos.Rows.Count > 0)
+            {
+                var medicamentoSeleccionado = (Modelo.Medicamento)dgvMedicamentos.CurrentRow.DataBoundItem;
+                Controladora.ControladoraMedicamentos.Instancia.EliminarMedicamento(medicamentoSeleccionado);
+
+            }
+            else
+            {
+                MessageBox.Show("Debe seleccionar un medicamento de la grilla para modificarlo", "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            ActualizarGrilla();
+        }
     }
 }

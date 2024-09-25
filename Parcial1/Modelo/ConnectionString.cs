@@ -12,8 +12,8 @@ namespace Modelo
         public static string GetConnectionString()
         {
             var _configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-     .Build();
-            var cs = _configuration.GetSection("Connnectionstrings");
+            .Build();
+            var cs = _configuration.GetSection("Connectionstrings");
             var a = cs.GetSection("PARCIAL1");
             return a.Value;
         }

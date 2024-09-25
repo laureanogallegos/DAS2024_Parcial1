@@ -42,33 +42,35 @@
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
+            btnEliminarDrogueria = new Button();
+            label5 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvAgregarDrogueria).BeginInit();
             SuspendLayout();
             // 
             // txtNombreComercial
             // 
-            txtNombreComercial.Location = new Point(188, 26);
+            txtNombreComercial.Location = new Point(188, 102);
             txtNombreComercial.Name = "txtNombreComercial";
             txtNombreComercial.Size = new Size(100, 23);
             txtNombreComercial.TabIndex = 0;
             // 
             // txtPrecioVenta
             // 
-            txtPrecioVenta.Location = new Point(188, 74);
+            txtPrecioVenta.Location = new Point(188, 141);
             txtPrecioVenta.Name = "txtPrecioVenta";
             txtPrecioVenta.Size = new Size(100, 23);
             txtPrecioVenta.TabIndex = 1;
             // 
             // txtStockMinimo
             // 
-            txtStockMinimo.Location = new Point(188, 119);
+            txtStockMinimo.Location = new Point(188, 191);
             txtStockMinimo.Name = "txtStockMinimo";
             txtStockMinimo.Size = new Size(100, 23);
             txtStockMinimo.TabIndex = 2;
             // 
             // txtStock
             // 
-            txtStock.Location = new Point(188, 171);
+            txtStock.Location = new Point(188, 245);
             txtStock.Name = "txtStock";
             txtStock.Size = new Size(100, 23);
             txtStock.TabIndex = 3;
@@ -76,7 +78,7 @@
             // chkVentaLibre
             // 
             chkVentaLibre.AutoSize = true;
-            chkVentaLibre.Location = new Point(323, 28);
+            chkVentaLibre.Location = new Point(304, 312);
             chkVentaLibre.Name = "chkVentaLibre";
             chkVentaLibre.Size = new Size(81, 19);
             chkVentaLibre.TabIndex = 4;
@@ -86,7 +88,7 @@
             // cmbMonodroga
             // 
             cmbMonodroga.FormattingEnabled = true;
-            cmbMonodroga.Location = new Point(188, 200);
+            cmbMonodroga.Location = new Point(188, 308);
             cmbMonodroga.Name = "cmbMonodroga";
             cmbMonodroga.Size = new Size(100, 23);
             cmbMonodroga.TabIndex = 5;
@@ -112,25 +114,25 @@
             // dgvAgregarDrogueria
             // 
             dgvAgregarDrogueria.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvAgregarDrogueria.Location = new Point(507, 119);
+            dgvAgregarDrogueria.Location = new Point(507, 131);
             dgvAgregarDrogueria.Name = "dgvAgregarDrogueria";
             dgvAgregarDrogueria.Size = new Size(190, 92);
             dgvAgregarDrogueria.TabIndex = 8;
             // 
             // btnAgregarMedicamento
             // 
-            btnAgregarMedicamento.Location = new Point(188, 244);
+            btnAgregarMedicamento.Location = new Point(116, 347);
             btnAgregarMedicamento.Name = "btnAgregarMedicamento";
             btnAgregarMedicamento.Size = new Size(181, 23);
             btnAgregarMedicamento.TabIndex = 9;
-            btnAgregarMedicamento.Text = "agregar medicamento";
+            btnAgregarMedicamento.Text = "Aceptar Medicamento";
             btnAgregarMedicamento.UseVisualStyleBackColor = true;
             btnAgregarMedicamento.Click += btnAgregarMedicamento_Click;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(131, 26);
+            label1.Location = new Point(57, 110);
             label1.Name = "label1";
             label1.Size = new Size(51, 15);
             label1.TabIndex = 10;
@@ -139,7 +141,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(97, 77);
+            label2.Location = new Point(57, 149);
             label2.Name = "label2";
             label2.Size = new Size(72, 15);
             label2.TabIndex = 11;
@@ -148,7 +150,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(88, 119);
+            label3.Location = new Point(57, 194);
             label3.Name = "label3";
             label3.Size = new Size(81, 15);
             label3.TabIndex = 12;
@@ -158,17 +160,38 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(88, 174);
+            label4.Location = new Point(57, 248);
             label4.Name = "label4";
             label4.Size = new Size(81, 15);
             label4.TabIndex = 13;
             label4.Text = "Stock Minimo";
+            // 
+            // btnEliminarDrogueria
+            // 
+            btnEliminarDrogueria.Location = new Point(507, 102);
+            btnEliminarDrogueria.Name = "btnEliminarDrogueria";
+            btnEliminarDrogueria.Size = new Size(140, 23);
+            btnEliminarDrogueria.TabIndex = 14;
+            btnEliminarDrogueria.Text = "Eliminar Drogueria";
+            btnEliminarDrogueria.UseVisualStyleBackColor = true;
+            btnEliminarDrogueria.Click += btnEliminarDrogueria_Click;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(57, 308);
+            label5.Name = "label5";
+            label5.Size = new Size(70, 15);
+            label5.TabIndex = 15;
+            label5.Text = "Monodroga";
             // 
             // FormDatosMedicamentos
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label5);
+            Controls.Add(btnEliminarDrogueria);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
@@ -207,5 +230,7 @@
         private Label label2;
         private Label label3;
         private Label label4;
+        private Button btnEliminarDrogueria;
+        private Label label5;
     }
 }

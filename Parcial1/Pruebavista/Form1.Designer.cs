@@ -71,6 +71,7 @@
             btnEliminar.TabIndex = 3;
             btnEliminar.Text = "eliminar";
             btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Click += btnEliminar_Click;
             // 
             // Form1
             // 

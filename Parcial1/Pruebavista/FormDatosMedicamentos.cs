@@ -27,11 +27,11 @@ namespace Pruebavista
             InitializeComponent();
             this.medicamento = medicamento;
             modifica = true;
-           
+
 
         }
-    
-        
+
+
 
         private void FormDatosMedicamentos_Load(object sender, EventArgs e)
         {
@@ -57,36 +57,85 @@ namespace Pruebavista
             }
         }
 
+        private bool validarCampos()
+        {
+            if (string.IsNullOrEmpty(this.txtNombreComercial.Text))
+            {
+                MessageBox.Show("Falta Agregar Nombre Comercial");
+                return false;
+            }
+            if (string.IsNullOrEmpty(this.txtPrecioVenta.Text))
+            {
+                MessageBox.Show("Falta Agregar Precio de venta");
+                return false;
+            }
+            if (string.IsNullOrEmpty(this.txtStock.Text))
+            {
+                MessageBox.Show("Falta Agregar El stock");
+                return false;
+            }
+            if (string.IsNullOrEmpty(this.txtStockMinimo.Text))
+            {
+                MessageBox.Show("Falta Agregar El stock Minimo");
+                return false;
+            }
+            if (string.IsNullOrEmpty(this.cmbMonodroga.Text))
+            {
+                MessageBox.Show("Falta Seleccionar monodroga");
+                return false;
+            }
+            if (!decimal.TryParse(txtPrecioVenta.Text, out decimal precioVenta))
+            {
+                MessageBox.Show("Ingrese un numero correcto");
+                return false;
+            }
+            if (!int.TryParse(txtStock.Text, out int stock))
+            {
+                MessageBox.Show("Ingrese un numero correcto");
+                return false;
+            }
+            if (!int.TryParse(txtStockMinimo.Text, out int stockMinimo))
+            {
+                MessageBox.Show("Ingrese un numero correcto");
+                return false;
+            }
+            return true;
+
+        }
+
         private void btnAgregarMedicamento_Click(object sender, EventArgs e)
         {
-            if (modifica)
-            {
-                medicamento.NombreComercial = txtNombreComercial.Text;
-                medicamento.VentaLibre = chkVentaLibre.Checked;
-                medicamento.PrecioVenta = Convert.ToDecimal(txtPrecioVenta.Text);
-                medicamento.StockActual = Convert.ToInt32(txtStockMinimo.Text);
-                medicamento.StockMinimo = Convert.ToInt32(txtStock.Text);
-                medicamento.monodroga.Nombre = cmbMonodroga.Text;
+            if (validarCampos()){
+                if (modifica)
+                {
+                    medicamento.NombreComercial = txtNombreComercial.Text;
+                    medicamento.VentaLibre = chkVentaLibre.Checked;
+                    medicamento.PrecioVenta = Convert.ToDecimal(txtPrecioVenta.Text);
+                    medicamento.StockActual = Convert.ToInt32(txtStockMinimo.Text);
+                    medicamento.StockMinimo = Convert.ToInt32(txtStock.Text);
+                    medicamento.monodroga.Nombre = cmbMonodroga.Text;
 
-                var mensaje = Controladora.ControladoraMedicamentos.Instancia.ModificarMedicamento(medicamento);
+                    var mensaje = Controladora.ControladoraMedicamentos.Instancia.ModificarMedicamento(medicamento);
 
+                }
+                else
+                {
+                    medicamento.NombreComercial = txtNombreComercial.Text;
+                    var nombreMonodroga = cmbMonodroga.Text;
+                    var monodrogas = Controladora.ControladoraMedicamentos.Instancia.ListarMonodrogas();
+                    var monodrogaEncontrada = monodrogas.FirstOrDefault(m => m.Nombre.ToLower() == nombreMonodroga.ToLower());
+                    medicamento.monodroga = monodrogaEncontrada;
+                    medicamento.NombreComercial = txtNombreComercial.Text;
+                    medicamento.VentaLibre = chkVentaLibre.Checked;
+                    medicamento.PrecioVenta = Convert.ToDecimal(txtPrecioVenta.Text);
+                    medicamento.StockActual = Convert.ToInt32(txtStock.Text);
+                    medicamento.StockMinimo = Convert.ToInt32(txtStockMinimo.Text);
+
+                    var mensaje = Controladora.ControladoraMedicamentos.Instancia.AgregarMedicamento(medicamento);
+
+                }
             }
-            else
-            {
-                medicamento.NombreComercial = txtNombreComercial.Text;
-                var nombreMonodroga = cmbMonodroga.Text;
-                var monodrogas = Controladora.ControladoraMedicamentos.Instancia.ListarMonodrogas();
-                var monodrogaEncontrada = monodrogas.FirstOrDefault(m => m.Nombre.ToLower() == nombreMonodroga.ToLower());
-                medicamento.monodroga = monodrogaEncontrada;
-                medicamento.NombreComercial = txtNombreComercial.Text;
-                medicamento.VentaLibre = chkVentaLibre.Checked;
-                medicamento.PrecioVenta = Convert.ToDecimal(txtPrecioVenta.Text);
-                medicamento.StockActual = Convert.ToInt32(txtStock.Text);
-                medicamento.StockMinimo = Convert.ToInt32(txtStockMinimo.Text);
-
-                var mensaje = Controladora.ControladoraMedicamentos.Instancia.AgregarMedicamento(medicamento);
-
-            }
+           
             this.Close();
         }
 
@@ -100,6 +149,25 @@ namespace Pruebavista
             medicamento.AgregarDrogueria((Drogueria)cmbDrogueria.SelectedItem);
             dgvAgregarDrogueria.DataSource = null;
             dgvAgregarDrogueria.DataSource = medicamento.ListaDroguerias;
+        }
+
+        private void btnEliminarDrogueria_Click(object sender, EventArgs e)
+        {
+            if (dgvAgregarDrogueria.Rows.Count > 0)
+            {
+                var drogueriaseleccionada = (Modelo.Drogueria)dgvAgregarDrogueria.CurrentRow.DataBoundItem;
+                medicamento.EliminarDrogueria(drogueriaseleccionada);
+                
+
+            }
+            else
+            {
+                MessageBox.Show("Se elimino la drogueria", "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            dgvAgregarDrogueria.DataSource = null;
+            dgvAgregarDrogueria.DataSource = medicamento.ListaDroguerias;
+
+
         }
     }
 }
