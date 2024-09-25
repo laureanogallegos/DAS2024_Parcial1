@@ -62,5 +62,90 @@ namespace Modelo
         { 
             get => monodrogas.AsReadOnly(); 
         }
+
+        public bool Agregar(Monodroga monodroga)
+        {
+            var fueAgregado = false;
+            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection");
+            var transaction = connection.BeginTransaction();
+            try
+            {
+
+                using var SqlCommand = new SqlCommand();
+                SqlCommand.Transaction = transaction;
+                SqlCommand.Connection = connection;
+                SqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlCommand.CommandText = "@SP_AGREGAR_MONODROGA";
+                SqlCommand.Parameters.Add("@NOMBRE ", System.Data.SqlDbType.NVarChar, 20).Value = monodroga.Nombre;
+                SqlCommand.ExecuteNonQuery();
+                transaction.Commit();
+                connection.Close();
+                monodrogas.Add(monodroga);
+                fueAgregado = true;
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                connection.Close();
+            }
+            return fueAgregado;
+        }
+
+        public bool Modificar(Monodroga monodroga)
+        {
+            var fueModificado = false;
+            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection");
+            var transaction = connection.BeginTransaction();
+            try
+            {
+
+                using var SqlCommand = new SqlCommand();
+                SqlCommand.Transaction = transaction;
+                SqlCommand.Connection = connection;
+                SqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlCommand.CommandText = "@SP_MODIFICAR_MONODROGA";
+                SqlCommand.Parameters.Add("@NOMBRE ", System.Data.SqlDbType.NVarChar, 20).Value = monodroga.Nombre;
+                SqlCommand.ExecuteNonQuery();
+                transaction.Commit();
+                connection.Close();
+                monodrogas.Remove(monodroga);
+                monodrogas.Add(monodroga);
+                fueModificado = true;
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                connection.Close();
+            }
+            return fueModificado;
+        }
+
+        public bool Eliminar(Monodroga monodroga)
+        {
+            var fueEliminado = false;
+            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection");
+            var transaction = connection.BeginTransaction();
+            try
+            {
+
+                using var SqlCommand = new SqlCommand();
+                SqlCommand.Transaction = transaction;
+                SqlCommand.Connection = connection;
+                SqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlCommand.CommandText = "@SP_ELIMINAR_MONODROGA";
+                SqlCommand.Parameters.Add("@NOMBRE ", System.Data.SqlDbType.NVarChar, 20).Value = monodroga.Nombre;
+                SqlCommand.ExecuteNonQuery();
+                transaction.Commit();
+                connection.Close();
+                monodrogas.Remove(monodroga);
+                fueEliminado = true;
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                connection.Close();
+            }
+            return fueEliminado;
+        }
     }
 }
