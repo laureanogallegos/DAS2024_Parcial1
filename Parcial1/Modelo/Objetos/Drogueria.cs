@@ -1,4 +1,4 @@
-﻿namespace Modelo
+﻿namespace Modelo.Objetos
 {
     public class Drogueria
     {

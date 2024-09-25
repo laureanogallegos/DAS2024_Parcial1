@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Modelo.Objetos;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 
@@ -6,9 +7,11 @@ namespace Modelo
 {
     public class RepositorioDroguerias
     {
-        private static RepositorioDroguerias instancia;
-        private List<Drogueria> droguerias;
+        private static readonly Lazy<RepositorioDroguerias> instancia = new Lazy<RepositorioDroguerias>(()=>new RepositorioDroguerias());
+        public static RepositorioDroguerias Instancia => instancia.Value;
+        private readonly List<Drogueria> droguerias;
         private IConfigurationRoot configuration;
+
         private RepositorioDroguerias()
         {
             configuration = ConfigurationHelper.GetConfiguration("appsettings.json");
@@ -16,19 +19,25 @@ namespace Modelo
             Recuperar();
         }
 
+        public ReadOnlyCollection<Drogueria> ListarDroguerias()
+        {
+            return droguerias.AsReadOnly();
+        }
+
         private void Recuperar()
         {
+            
             using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
-
             try
-            {
+            {   
                 using var command = new SqlCommand();
-                //otra forma de hacerlo es usando Store Procedures
-                command.CommandText = "SP_RECUPERARDROGUERIAS";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                /////////////////////////
-                command.Connection = connection;
                 command.Connection.Open();
+                command.Connection = connection;
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.CommandText = "SP_RECUPERARDROGUERIAS";
+                
+                /////////////////////////
+
                 var reader = command.ExecuteReader();
                 while (reader.Read())//lee a traves de todas las filas que existen en la tabla
                 {
@@ -44,29 +53,11 @@ namespace Modelo
             }
             catch (SqlException ex)
             {
+                Console.WriteLine(ex.ToString());
                 connection.Close();
-                connection.Dispose();
-            }
-            catch (Exception ex)
-            {
-                connection.Close();
-                connection.Dispose();
             }
 
         }
 
-        public static RepositorioDroguerias Instancia
-        {
-            get
-            {
-                instancia ??= new RepositorioDroguerias();
-                return instancia;
-            }
-        }
-
-        public ReadOnlyCollection<Drogueria> Droguerias
-        {
-            get => droguerias.AsReadOnly();
-        }
     }
 }
