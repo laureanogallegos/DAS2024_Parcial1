@@ -28,12 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            btnABMMedicamento = new Button();
+            SuspendLayout();
+            // 
+            // btnABMMedicamento
+            // 
+            btnABMMedicamento.BackColor = SystemColors.ActiveCaption;
+            btnABMMedicamento.Location = new Point(54, 32);
+            btnABMMedicamento.Name = "btnABMMedicamento";
+            btnABMMedicamento.Size = new Size(128, 46);
+            btnABMMedicamento.TabIndex = 0;
+            btnABMMedicamento.Text = "ABM MEDICAMENTO";
+            btnABMMedicamento.UseVisualStyleBackColor = false;
+            btnABMMedicamento.Click += btnABMMedicamento_Click;
+            // 
+            // Form1
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(btnABMMedicamento);
+            Name = "Form1";
+            Text = "Form1";
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private Button btnABMMedicamento;
     }
 }

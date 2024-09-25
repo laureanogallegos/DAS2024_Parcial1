@@ -6,5 +6,11 @@ namespace Parcial1
         {
             InitializeComponent();
         }
+
+        private void btnABMMedicamento_Click(object sender, EventArgs e)
+        {
+            Form formMedicamento = new FormMedicamento();
+            formMedicamento.Show();
+        }
     }
 }
