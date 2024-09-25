@@ -6,7 +6,9 @@ namespace Modelo
 {
     public class RepositorioDroguerias
     {
-        private static RepositorioDroguerias instancia;
+        private static readonly Lazy<RepositorioDroguerias> instancia = new Lazy<RepositorioDroguerias>(() => new RepositorioDroguerias());
+        public static RepositorioDroguerias Instancia => instancia.Value;
+
         private List<Drogueria> droguerias;
         private IConfigurationRoot configuration;
         private RepositorioDroguerias()
@@ -53,15 +55,6 @@ namespace Modelo
                 connection.Dispose();
             }
 
-        }
-
-        public static RepositorioDroguerias Instancia
-        {
-            get
-            {
-                instancia ??= new RepositorioDroguerias();
-                return instancia;
-            }
         }
 
         public ReadOnlyCollection<Drogueria> Droguerias

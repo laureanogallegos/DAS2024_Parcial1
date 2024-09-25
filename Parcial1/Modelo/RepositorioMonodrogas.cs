@@ -1,12 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
+using System.Transactions;
 
 namespace Modelo
 {
     public class RepositorioMonodrogas
     {
-        private static RepositorioMonodrogas instancia;
+        private static readonly Lazy<RepositorioMonodrogas> instancia = new Lazy<RepositorioMonodrogas>(() => new RepositorioMonodrogas());
+        public static RepositorioMonodrogas Instancia => instancia.Value;
+
         private List<Monodroga> monodrogas;
         private IConfigurationRoot configuration;
         private RepositorioMonodrogas()
@@ -46,15 +50,6 @@ namespace Modelo
             {
                 connection.Close();
                 connection.Dispose();
-            }
-        }
-
-        public static RepositorioMonodrogas Instancia
-        { 
-            get 
-            {
-                instancia ??= new RepositorioMonodrogas();
-                return instancia;
             }
         }
 
