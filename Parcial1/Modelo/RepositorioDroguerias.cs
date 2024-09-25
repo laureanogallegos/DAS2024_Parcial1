@@ -15,7 +15,6 @@ namespace Modelo
             droguerias = new List<Drogueria>();
             Recuperar();
         }
-
         private void Recuperar()
         {
             using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
