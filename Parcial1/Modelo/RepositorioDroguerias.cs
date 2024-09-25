@@ -68,5 +68,14 @@ namespace Modelo
         {
             get => droguerias.AsReadOnly();
         }
+
+        public ReadOnlyCollection<Drogueria> RecuperarDroguerias()
+        {
+            return droguerias.AsReadOnly();
+        }
+
+
+
     }
+
 }
