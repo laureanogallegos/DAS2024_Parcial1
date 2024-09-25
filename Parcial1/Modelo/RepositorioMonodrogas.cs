@@ -9,6 +9,7 @@ namespace Modelo
         private static RepositorioMonodrogas instancia;
         private List<Monodroga> monodrogas;
         private IConfigurationRoot configuration;
+        private SqlConnection connection;
         private RepositorioMonodrogas()
         {
             configuration = ConfigurationHelper.GetConfiguration("appsettings.json");
@@ -26,6 +27,7 @@ namespace Modelo
                 command.CommandText = "SP_RECUPERARMONODROGAS";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 /////////////////////////
+                
                 command.Connection = connection;
                 command.Connection.Open();
                 var reader = command.ExecuteReader();
@@ -48,7 +50,7 @@ namespace Modelo
                 connection.Dispose();
             }
         }
-
+        
         public static RepositorioMonodrogas Instancia
         { 
             get 
