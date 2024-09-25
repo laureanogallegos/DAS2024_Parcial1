@@ -10,11 +10,18 @@ namespace Modelo
         private List<Drogueria> droguerias;
         private IConfigurationRoot configuration;
         private RepositorioDroguerias()
+
         {
             configuration = ConfigurationHelper.GetConfiguration("appsettings.json");
             droguerias = new List<Drogueria>();
             Recuperar();
         }
+
+        public ReadOnlyCollection<Drogueria> ListarDroguerias()
+        {
+            return droguerias.AsReadOnly();
+        }
+
 
         private void Recuperar()
         {

@@ -1,8 +1,8 @@
 namespace Parcial1
 {
-    public partial class Form1 : Form
+    public partial class Medicamentos : Form
     {
-        public Form1()
+        public Medicamentos()
         {
             InitializeComponent();
         }

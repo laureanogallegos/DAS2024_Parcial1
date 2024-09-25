@@ -15,10 +15,14 @@ namespace Modelo
             monodrogas = new List<Monodroga>();
             Recuperar();
         }
-
+        public ReadOnlyCollection<Monodroga> ListarMonodrogas()
+        {
+            return monodrogas.AsReadOnly();
+        }
         private void Recuperar()
         {
             using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
+           
             try
             {
                 using var command = new SqlCommand();
