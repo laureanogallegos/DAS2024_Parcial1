@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -70,14 +71,14 @@ namespace Modelo
         {
             var estaInsertado = false;
             using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
-
-
+            {
+                var transaction = connection.BeginTransaction();
                 try
                 {
                     using var command = new SqlCommand();
                     command.Connection = connection;
                     connection.Open();
-                    var transaction = connection.BeginTransaction();
+
                     command.Transaction = transaction;
                     command.CommandType = System.Data.CommandType.StoredProcedure;
                     command.CommandText = "SP_AGREGARMEDICAMENTO";
@@ -116,21 +117,25 @@ namespace Modelo
                 }
                 catch (Exception ex)
                 {
-                    //transaction.Rollback();
+                    transaction.Rollback();
                     connection.Close();
                 }
-            return estaInsertado;
+                return estaInsertado;
+            }
+
+
         }
         public bool ModificarMedicamento(Medicamento medicamento)
         {
             var estaInsertado = false;
             using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
+            {
+                var transaction = connection.BeginTransaction();
                 try
                 {
                     using var command = new SqlCommand();
                     command.Connection = connection;
                     command.Connection.Open();
-                    var transaction = connection.BeginTransaction();
                     command.Transaction = transaction;
                     command.CommandText = "SP_MODIFICARMEDICAMENTO";
                     command.CommandType = System.Data.CommandType.StoredProcedure;
@@ -166,20 +171,24 @@ namespace Modelo
                 }
                 catch (Exception ex)
                 {
-                    //transaction.Rollback();
+                    transaction.Rollback();
                     connection.Close();
                 }
-            return estaInsertado;
+                return estaInsertado;
+            }
+
         }
 
         public bool EliminarMedicamento(Medicamento medicamento)
         {
             var estaEliminado = false;
             using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
+            {
+                var transaction = connection.BeginTransaction();
                 try
                 {
                     connection.Open();
-                    var transaction = connection.BeginTransaction();
+
                     using var sqlCommand = new SqlCommand();
                     sqlCommand.Transaction = transaction;
                     sqlCommand.Connection = connection;
@@ -195,10 +204,12 @@ namespace Modelo
                 }
                 catch (Exception ex)
                 {
-                    //transaction.Rollback();
+                    transaction.Rollback();
                     connection.Close();
                 }
-            return estaEliminado;
+                return estaEliminado;
+            }
+
         }
 
 
