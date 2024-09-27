@@ -9,24 +9,14 @@ namespace Modelo
 {
     public class Medicamento
     {
-        private string nombreComercial;
-        private string tipoVenta;
-        private decimal precioVenta;
-        private int stockActual;
-        private int stockMinimo;
-        private Monodroga monodroga;
+        public string NombreComercial { get; set; }
+        public Boolean EsVentaLibre { get; set; }
+        public decimal PrecioVenta { get; set; }
+        public int StockActual { get; set; }
+        public int StockMinimo { get; set; }
+        public Monodroga Monodroga { get; set; }
 
-
-
-        public string NombreComercial { get => nombreComercial; set => nombreComercial = value; }
-        public string TipoVenta { get => tipoVenta; set => tipoVenta = value; }
-        public decimal PrecioVenta { get => precioVenta; set => precioVenta = value; }
-        public int StockActual { get => stockActual; set => stockActual = value; }
-        public int StockMinimo { get => stockMinimo; set => stockMinimo = value; }
-        public Monodroga Monodroga { get => monodroga; set => monodroga = value; }
-
-        private List<Drogueria> droguerias;
-
+        private readonly List<Drogueria> droguerias;
         public Medicamento()
         {
             droguerias = new List<Drogueria>();
@@ -38,32 +28,26 @@ namespace Modelo
         }
 
 
-        public string Agregar(Drogueria drogueria)
+        public string AgregarDrogueria(Drogueria drogueria)
         {
-            var agregarDro = droguerias.FirstOrDefault(x => x.Cuit == drogueria.Cuit);
-            if (agregarDro == null)
+            var drogueriaExiste = droguerias.FirstOrDefault(dr => dr.Cuit == drogueria.Cuit);
+            if (drogueriaExiste == null)
             {
                 droguerias.Add(drogueria);
-                return "Se agrego Correctamente";
+                return "Proveedor agregado correctamente";
             }
-            else
-            {
-                return "No se Agrego Correctamnte";
-            }
+            else return "Proveedor ya existente";
         }
 
-        public string Eliminar(Drogueria drogueria)
+        public string QuitarDrogueria(Drogueria drogueria)
         {
-            var eliminarDro = droguerias.FirstOrDefault(x => x.Cuit == drogueria.Cuit);
-            if (eliminarDro != null)
+            var drogueriaExiste = droguerias.FirstOrDefault(dr => dr.Cuit == drogueria.Cuit);
+            if (drogueriaExiste != null)
             {
-                droguerias.Add(drogueria);
-                return "Se elimino Correctamente";
+                droguerias.Remove(drogueriaExiste);
+                return "Proveedor agregado correctamente";
             }
-            else
-            {
-                return "No se elimino Correctamnte";
-            }
+            else return "Proveedor no existente";
         }
     }
 }

@@ -10,103 +10,166 @@ namespace Controladora
 {
     public class ControladoraMedicamentos
     {
-        private RepositorioMedicamentos repositorioMedicamentos;
-
-        private static readonly Lazy<ControladoraMedicamentos> instance = new(() => new ControladoraMedicamentos());
-
-        public static ControladoraMedicamentos Instance = instance.Value;
-
-        public ControladoraMedicamentos()
+        private ControladoraMedicamentos()
         {
-            repositorioMedicamentos = new RepositorioMedicamentos();
+            // Private constructor prevents direct instantiation
+        }
+        private static ControladoraMedicamentos instancia;
+        public static ControladoraMedicamentos Instancia
+        {
+            get
+            {
+                if (instancia == null)
+                    instancia = new ControladoraMedicamentos();
+                return instancia;
+            }
         }
 
-        public ReadOnlyCollection<Medicamento> ListarMedicamento()
-        {
-            return RepositorioMedicamentos.Instancia.ListarMedicamento();
-        }
 
-        public ReadOnlyCollection<Drogueria> ListarDrogueria()
-        {
-            return RepositorioDroguerias.Instancia.ListarDrogueria();
-        }
 
-        public ReadOnlyCollection<Monodroga> ListarMonodroga() 
-        {
-            return RepositorioMonodrogas.Instancia.ListarMonodroga();
-        }
 
-        public bool Agregar(Medicamento medicamento)
+        public ReadOnlyCollection<Modelo.Medicamento> RecuperarMedicamentos()
         {
             try
             {
-                var agregarMedicamento = RepositorioMedicamentos.Instancia.ListarMedicamento();
-                var agMed = agregarMedicamento.FirstOrDefault(x => x.NombreComercial == medicamento.NombreComercial);
-                if (agMed == null)
-                {
-                    RepositorioMedicamentos.Instancia.Agregar(medicamento);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-                return false;
+                return Modelo.RepositorioMedicamentos.Instancia.Medicamentos();
             }
-
-            catch (Exception ex)
+            catch (Exception)
             {
-                return false;
+                throw;
             }
-
         }
-        public bool Eliminar(Medicamento medicamento)
+
+        public ReadOnlyCollection<Monodroga> RecuperarMonodroga()
         {
             try
             {
-                var aMedicamento = RepositorioMedicamentos.Instancia.ListarMedicamento();
-                var agMed = aMedicamento.FirstOrDefault(x => x.NombreComercial == medicamento.NombreComercial);
-                if (agMed != null)
-                {
-                    RepositorioMedicamentos.Instancia.Eliminar(medicamento);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-                return false;
+                return RepositorioMonodrogas.Instancia.Monodrogas;
             }
-
-            catch (Exception ex)
+            catch (Exception)
             {
-                return false;
+                throw;
             }
-
         }
-        public bool Modificar(Medicamento medicamento)
+
+        public ReadOnlyCollection<Drogueria> RecuperarDrogueria()
         {
             try
             {
-                var agregarMedicamento = RepositorioMedicamentos.Instancia.ListarMedicamento();
-                var agMed = agregarMedicamento.FirstOrDefault(x => x.NombreComercial == medicamento.NombreComercial);
-                if (agMed == null)
+                return RepositorioDroguerias.Instancia.Droguerias;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public Monodroga? BuscarMonodrogaPorNombre(string nombre)
+        {
+            try
+            {
+                var monodrogaExistente = RepositorioMonodrogas.Instancia.Monodrogas.FirstOrDefault(m => m.Nombre == nombre);
+                if (monodrogaExistente != null)
+                    return monodrogaExistente;
+                else return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public Drogueria? BuscarDrogueriaPorRazonSocial(string razonSocial)
+        {
+            try
+            {
+                var razonSocialExistente = RepositorioDroguerias.Instancia.Droguerias.FirstOrDefault(d => d.RazonSocial == razonSocial);
+                if (razonSocialExistente != null)
+                    return razonSocialExistente;
+                else return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public string AgregarMedicamento(Medicamento medicamento)
+        {
+            try
+            {
+  
+                var medicamentoExistente = RepositorioMedicamentos.Instancia.Medicamentos().FirstOrDefault(m => m.NombreComercial == medicamento.NombreComercial );
+
+                if (medicamentoExistente != null)
                 {
-                    RepositorioMedicamentos.Instancia.Modificar(medicamento);
-                    return true;
+
+                    return $"El medicamento {medicamento.NombreComercial} ya existe.";
                 }
                 else
                 {
-                    return false;
+                    var ok = RepositorioMedicamentos.Instancia.Agregar(medicamento);
+                    if (ok)
+                    {
+                        return $"El medicamento {medicamento.NombreComercial} se agregó correctamente.";
+                    }
+                    else
+                    {
+                        return $"El medicamento {medicamento.NombreComercial} no se ha podido agregar.";
+                    }
                 }
-                return false;
             }
-
-            catch (Exception ex)
+            catch (Exception)
             {
-                return false;
+                return "Error desconocido al agregar el medicamento.";
             }
+        }
 
+        public string ModificarMedicamento(Medicamento medicamento)
+        {
+            try
+            {
+                var medicamentoExistente = RepositorioMedicamentos.Instancia.Medicamentos().FirstOrDefault(m => m.NombreComercial == medicamento.NombreComercial);
+                if (medicamentoExistente!= null)
+                {
+                    var ok = RepositorioMedicamentos.Instancia.Modificar(medicamento);
+                    if (ok)
+                    {
+                        return $"El medicamento {medicamento.NombreComercial} se modificó correctamente.";
+                    }
+                    else return $"El medicamento {medicamento.NombreComercial} no se ha podido modificar.";
+                }
+                else
+                {
+                    return $"El medicamento {medicamento.NombreComercial} no existe.";
+                }
+            }
+            catch (Exception)
+            {
+                return "Error desconocido";
+            }
+        }
+        public string EliminarMedicamento(Medicamento medicamento)
+        {
+            try
+            {
+                var medicamentoExistente = RepositorioMedicamentos.Instancia.Medicamentos().FirstOrDefault(m => m.NombreComercial == medicamento.NombreComercial);
+                if (medicamentoExistente != null)
+                {
+                    var ok = RepositorioMedicamentos.Instancia.Eliminar(medicamento);
+                    if (ok)
+                    {
+                        return $"El medicamento {medicamento.NombreComercial} se modificó correctamente.";
+                    }
+                    else return $"El medicamento {medicamento.NombreComercial} no se ha podido modificar.";
+                }
+                else
+                {
+                    return $"El medicamento {medicamento.NombreComercial} no existe.";
+                }
+            }
+            catch (Exception)
+            {
+                return "Error desconocido";
+            }
         }
     }
 
