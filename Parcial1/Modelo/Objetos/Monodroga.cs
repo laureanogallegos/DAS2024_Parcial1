@@ -4,11 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelo
+namespace Modelo.Objetos
 {
     public class Monodroga
     {
         public string Nombre { get; set; }
- 
+
+        public override string ToString()
+        {
+            return Nombre;
+        }
+
     }
 }
