@@ -34,6 +34,7 @@
             btnAgregar = new Button();
             btnModificar = new Button();
             groupBox2 = new GroupBox();
+            chkEsVentaLibre = new CheckBox();
             cmbDrogueria = new ComboBox();
             cmbMonodroga = new ComboBox();
             txtStockMinimo = new TextBox();
@@ -47,7 +48,6 @@
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
-            chkEsVentaLibre = new CheckBox();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvMedicamentos).BeginInit();
             groupBox2.SuspendLayout();
@@ -58,7 +58,7 @@
             groupBox1.Controls.Add(dgvMedicamentos);
             groupBox1.Location = new Point(12, 12);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(993, 562);
+            groupBox1.Size = new Size(953, 562);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Medicamentos";
@@ -66,11 +66,11 @@
             // dgvMedicamentos
             // 
             dgvMedicamentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvMedicamentos.Location = new Point(6, 26);
+            dgvMedicamentos.Location = new Point(6, 19);
             dgvMedicamentos.Name = "dgvMedicamentos";
             dgvMedicamentos.RowHeadersWidth = 51;
             dgvMedicamentos.RowTemplate.Height = 29;
-            dgvMedicamentos.Size = new Size(981, 530);
+            dgvMedicamentos.Size = new Size(941, 537);
             dgvMedicamentos.TabIndex = 0;
             // 
             // btnEliminar
@@ -85,7 +85,7 @@
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(1011, 610);
+            btnAgregar.Location = new Point(1231, 610);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(189, 65);
             btnAgregar.TabIndex = 5;
@@ -95,7 +95,7 @@
             // 
             // btnModificar
             // 
-            btnModificar.Location = new Point(1235, 610);
+            btnModificar.Location = new Point(971, 610);
             btnModificar.Name = "btnModificar";
             btnModificar.Size = new Size(185, 65);
             btnModificar.TabIndex = 6;
@@ -119,17 +119,26 @@
             groupBox2.Controls.Add(label3);
             groupBox2.Controls.Add(label2);
             groupBox2.Controls.Add(label1);
-            groupBox2.Location = new Point(1011, 12);
+            groupBox2.Location = new Point(971, 12);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(409, 562);
+            groupBox2.Size = new Size(449, 562);
             groupBox2.TabIndex = 7;
             groupBox2.TabStop = false;
             groupBox2.Text = "Agregar o modificar";
             // 
+            // chkEsVentaLibre
+            // 
+            chkEsVentaLibre.AutoSize = true;
+            chkEsVentaLibre.Location = new Point(308, 124);
+            chkEsVentaLibre.Name = "chkEsVentaLibre";
+            chkEsVentaLibre.Size = new Size(18, 17);
+            chkEsVentaLibre.TabIndex = 14;
+            chkEsVentaLibre.UseVisualStyleBackColor = true;
+            // 
             // cmbDrogueria
             // 
             cmbDrogueria.FormattingEnabled = true;
-            cmbDrogueria.Location = new Point(258, 501);
+            cmbDrogueria.Location = new Point(307, 501);
             cmbDrogueria.Name = "cmbDrogueria";
             cmbDrogueria.Size = new Size(136, 28);
             cmbDrogueria.TabIndex = 13;
@@ -137,35 +146,35 @@
             // cmbMonodroga
             // 
             cmbMonodroga.FormattingEnabled = true;
-            cmbMonodroga.Location = new Point(258, 421);
+            cmbMonodroga.Location = new Point(307, 421);
             cmbMonodroga.Name = "cmbMonodroga";
             cmbMonodroga.Size = new Size(136, 28);
             cmbMonodroga.TabIndex = 12;
             // 
             // txtStockMinimo
             // 
-            txtStockMinimo.Location = new Point(259, 342);
+            txtStockMinimo.Location = new Point(308, 342);
             txtStockMinimo.Name = "txtStockMinimo";
             txtStockMinimo.Size = new Size(135, 27);
             txtStockMinimo.TabIndex = 11;
             // 
             // txtStockActual
             // 
-            txtStockActual.Location = new Point(259, 268);
+            txtStockActual.Location = new Point(308, 268);
             txtStockActual.Name = "txtStockActual";
             txtStockActual.Size = new Size(135, 27);
             txtStockActual.TabIndex = 10;
             // 
             // txtPrecioDeVenta
             // 
-            txtPrecioDeVenta.Location = new Point(259, 192);
+            txtPrecioDeVenta.Location = new Point(308, 192);
             txtPrecioDeVenta.Name = "txtPrecioDeVenta";
             txtPrecioDeVenta.Size = new Size(135, 27);
             txtPrecioDeVenta.TabIndex = 9;
             // 
             // txtNombreComercial
             // 
-            txtNombreComercial.Location = new Point(259, 51);
+            txtNombreComercial.Location = new Point(308, 51);
             txtNombreComercial.Name = "txtNombreComercial";
             txtNombreComercial.Size = new Size(135, 27);
             txtNombreComercial.TabIndex = 7;
@@ -232,15 +241,6 @@
             label1.Size = new Size(136, 20);
             label1.TabIndex = 0;
             label1.Text = "Nombre comercial:";
-            // 
-            // chkEsVentaLibre
-            // 
-            chkEsVentaLibre.AutoSize = true;
-            chkEsVentaLibre.Location = new Point(259, 124);
-            chkEsVentaLibre.Name = "chkEsVentaLibre";
-            chkEsVentaLibre.Size = new Size(18, 17);
-            chkEsVentaLibre.TabIndex = 14;
-            chkEsVentaLibre.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 

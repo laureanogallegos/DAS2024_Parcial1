@@ -13,13 +13,13 @@ namespace Controladora
 
         public static ModificarMedicamentoController Instancia => instancia.Value;
 
-        public bool ModificarMedicamento(Medicamento medicamento)
+        public bool ModificarMedicamento(Medicamento medicamento, Medicamento medicamentoSeleccionado)
         {
             try
             {
                 var medicamentoExistente = RepositorioMedicamentos.Instancia.Medicamentos.FirstOrDefault(m => m.NombreComercial == medicamento.NombreComercial);
-                if (medicamentoExistente != null)
-                    return RepositorioMedicamentos.Instancia.Modificar(medicamento);
+                if (medicamentoExistente == null)
+                    return RepositorioMedicamentos.Instancia.Modificar(medicamento, medicamentoSeleccionado);
                 else return false;
             }
             catch
