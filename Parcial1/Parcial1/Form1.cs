@@ -33,7 +33,7 @@ namespace Parcial1
 
                 if (medicamento.AgregarDrogueria(drogueria))
                 {
-                    if (AgregarMedicamentoController.Instancia.AgregarMedicamento(medicamento))
+                    if (MedicamentoController.Instancia.AgregarMedicamento(medicamento))
                     {
                         dgvMedicamentos.AutoGenerateColumns = false;
                         dgvMedicamentos.DataSource = RepositorioMedicamentos.Instancia.Medicamentos;
@@ -77,7 +77,7 @@ namespace Parcial1
 
                 if (medicamento.AgregarDrogueria(drogueria))
                 {
-                    if (ModificarMedicamentoController.Instancia.ModificarMedicamento(medicamento, medicamentoSeleccionado))
+                    if (MedicamentoController.Instancia.ModificarMedicamento(medicamento, medicamentoSeleccionado))
                     {
                         dgvMedicamentos.AutoGenerateColumns = false;
                         dgvMedicamentos.DataSource = RepositorioMedicamentos.Instancia.Medicamentos;
@@ -105,7 +105,7 @@ namespace Parcial1
 
             Medicamento medicamento = dgvMedicamentos.SelectedRows[0].DataBoundItem as Medicamento;
 
-            if (EliminarMedicamentoController.Instancia.EliminarMedicamento(medicamento))
+            if (MedicamentoController.Instancia.EliminarMedicamento(medicamento))
             {
                 dgvMedicamentos.AutoGenerateColumns = false;
                 dgvMedicamentos.DataSource = RepositorioMedicamentos.Instancia.Medicamentos;
