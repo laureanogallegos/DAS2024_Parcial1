@@ -46,8 +46,10 @@
             dgvMedicamentos.Location = new Point(12, 38);
             dgvMedicamentos.Name = "dgvMedicamentos";
             dgvMedicamentos.RowTemplate.Height = 25;
+            dgvMedicamentos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvMedicamentos.Size = new Size(479, 150);
             dgvMedicamentos.TabIndex = 0;
+            dgvMedicamentos.CellClick += dgvMedicamentos_CellClick;
             // 
             // btnAgregar
             // 
@@ -104,6 +106,7 @@
             dgvDroguerias.Location = new Point(12, 269);
             dgvDroguerias.Name = "dgvDroguerias";
             dgvDroguerias.RowTemplate.Height = 25;
+            dgvDroguerias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvDroguerias.Size = new Size(479, 150);
             dgvDroguerias.TabIndex = 6;
             // 

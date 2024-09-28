@@ -18,6 +18,7 @@ namespace Parcial1
             modifica = true;
             InitializeComponent();
             txtNombreComercial.Enabled = false;
+            RellenarCampos(medicamento);
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -34,7 +35,7 @@ namespace Parcial1
                     nuevoMedicamento.VentaLibre = chBoxVentaLibre.Checked;
                     nuevoMedicamento.Monodroga = ControladoraMedicamentos.Instancia.ListarMonodrogas().FirstOrDefault(x => x.Nombre == cmbMonodroga.Text);
 
-                    if (dgvDroguerias.Rows.Count != 0)
+                    if (dgvDrogueriasDelMedicamento.Rows.Count != 0)
                     {
                         if (ControladoraMedicamentos.Instancia.AgregarMedicamento(nuevoMedicamento))
                         {
@@ -73,6 +74,20 @@ namespace Parcial1
                 }
             }
         }
+
+        private void RellenarCampos(Medicamento med)
+        {
+            txtNombreComercial.Text = med.NombreComercial;
+            txtPrecioVenta.Text = med.PrecioVenta.ToString();
+            txtStock.Text = med.StockActual.ToString();
+            txtStockMinimo.Text = med.StockMinimo.ToString();
+            chBoxVentaLibre.Enabled = med.VentaLibre;
+            cmbMonodroga.Text = med.Monodroga.Nombre.ToString();
+            var list = med.ListarDroguerias();
+            dgvDrogueriasDelMedicamento.DataSource = null;
+            dgvDrogueriasDelMedicamento.DataSource = list;
+        }
+
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
@@ -113,8 +128,8 @@ namespace Parcial1
 
         public void ActualizarGrillaDrogueriasDelMedicamento()
         {
-            dgvDroguerias.DataSource = null;
-            dgvDroguerias.DataSource = ControladoraMedicamentos.Instancia.ListarDrogueriasDelMedicamento();
+            dgvDrogueriasDelMedicamento.DataSource = null;
+            dgvDrogueriasDelMedicamento.DataSource = ControladoraMedicamentos.Instancia.ListarDrogueriasDelMedicamento();
         }
 
         private void RellenarCmbDrogueria()
@@ -131,9 +146,9 @@ namespace Parcial1
 
         private void btnEliminarDrogueria_Click(object sender, EventArgs e)
         {
-            if (dgvDroguerias.SelectedRows.Count == 1)
+            if (dgvDrogueriasDelMedicamento.SelectedRows.Count == 1)
             {
-                Drogueria drogSeleccionada = (Drogueria)dgvDroguerias.CurrentRow.DataBoundItem;
+                Drogueria drogSeleccionada = (Drogueria)dgvDrogueriasDelMedicamento.CurrentRow.DataBoundItem;
                 ControladoraMedicamentos.Instancia.EliminarDrogueriaDelMedicamento(drogSeleccionada);
                 ActualizarGrillaDrogueriasDelMedicamento();
             }

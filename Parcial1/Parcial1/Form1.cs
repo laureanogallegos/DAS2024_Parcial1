@@ -9,12 +9,13 @@ namespace Parcial1
         public Form1()
         {
             InitializeComponent();
+            ActualizarVista();
         }
 
         private void ActualizarVista()
         {
             dgvMedicamentos.DataSource = null;
-            dgvMedicamentos .DataSource = ControladoraMedicamentos.Instancia.ListarMedicamentos();
+            dgvMedicamentos.DataSource = ControladoraMedicamentos.Instancia.ListarMedicamentos();
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
@@ -48,6 +49,23 @@ namespace Parcial1
         private void btnSalir_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void dgvMedicamentos_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            int index = e.RowIndex;
+            if (dgvMedicamentos.Rows.Count > 0)
+            {
+                var nombreComercial = dgvMedicamentos.Rows[index].Cells[1].Value.ToString();
+                var medicamentoSeleccionado = ControladoraMedicamentos.Instancia.ListarMedicamentos().FirstOrDefault(x => x.NombreComercial == nombreComercial);
+
+                if (medicamentoSeleccionado != null)
+                {
+                    dgvDroguerias.DataSource = null;
+                    dgvDroguerias.DataSource = medicamentoSeleccionado.ListarDroguerias();
+                }
+            }
         }
     }
 }

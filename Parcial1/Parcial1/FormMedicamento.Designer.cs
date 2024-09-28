@@ -41,7 +41,7 @@
             btnAgregarDrogueria = new Button();
             btnSalir = new Button();
             btnAceptar = new Button();
-            dgvDroguerias = new DataGridView();
+            dgvDrogueriasDelMedicamento = new DataGridView();
             cmbDrogueria = new ComboBox();
             cmbMonodroga = new ComboBox();
             txtStockMinimo = new TextBox();
@@ -49,7 +49,7 @@
             txtPrecioVenta = new TextBox();
             txtNombreComercial = new TextBox();
             groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvDroguerias).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvDrogueriasDelMedicamento).BeginInit();
             SuspendLayout();
             // 
             // groupBox1
@@ -66,7 +66,7 @@
             groupBox1.Controls.Add(btnAgregarDrogueria);
             groupBox1.Controls.Add(btnSalir);
             groupBox1.Controls.Add(btnAceptar);
-            groupBox1.Controls.Add(dgvDroguerias);
+            groupBox1.Controls.Add(dgvDrogueriasDelMedicamento);
             groupBox1.Controls.Add(cmbDrogueria);
             groupBox1.Controls.Add(cmbMonodroga);
             groupBox1.Controls.Add(txtStockMinimo);
@@ -192,14 +192,15 @@
             btnAceptar.UseVisualStyleBackColor = true;
             btnAceptar.Click += btnAceptar_Click;
             // 
-            // dgvDroguerias
+            // dgvDrogueriasDelMedicamento
             // 
-            dgvDroguerias.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDroguerias.Location = new Point(306, 112);
-            dgvDroguerias.Name = "dgvDroguerias";
-            dgvDroguerias.RowTemplate.Height = 25;
-            dgvDroguerias.Size = new Size(364, 150);
-            dgvDroguerias.TabIndex = 6;
+            dgvDrogueriasDelMedicamento.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvDrogueriasDelMedicamento.Location = new Point(306, 112);
+            dgvDrogueriasDelMedicamento.Name = "dgvDrogueriasDelMedicamento";
+            dgvDrogueriasDelMedicamento.RowTemplate.Height = 25;
+            dgvDrogueriasDelMedicamento.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvDrogueriasDelMedicamento.Size = new Size(364, 150);
+            dgvDrogueriasDelMedicamento.TabIndex = 6;
             // 
             // cmbDrogueria
             // 
@@ -256,7 +257,7 @@
             Load += FormMedicamento_Load;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvDroguerias).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvDrogueriasDelMedicamento).EndInit();
             ResumeLayout(false);
         }
 
@@ -267,7 +268,7 @@
         private Button btnAgregarDrogueria;
         private Button btnSalir;
         private Button btnAceptar;
-        private DataGridView dgvDroguerias;
+        private DataGridView dgvDrogueriasDelMedicamento;
         private ComboBox cmbDrogueria;
         private ComboBox cmbMonodroga;
         private TextBox txtStockMinimo;
