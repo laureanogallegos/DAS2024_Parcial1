@@ -35,61 +35,97 @@ namespace Controladora
                 return new ReadOnlyCollection<Drogueria>(new List<Drogueria>());
             }
         }
-        public bool AgregarMedicamento(Medicamento medicamento)
+        public ReadOnlyCollection<Monodroga> RecuperarMonodrogas()
         {
             try
             {
-                var medicamentoExistente = RepositorioMedicamentos.Instancia.Medicamentos.FirstOrDefault(m => m.NombreComercial == medicamento.NombreComercial);
+                return RepositorioMonodrogas.Instancia.Monodrogas;
+            }
+            catch
+            {
+                return new ReadOnlyCollection<Monodroga>(new List<Monodroga>());
+            }
+        }
+        public string AgregarMedicamento(Medicamento medicamento)
+        {
+            try
+            {
+                var medicamentoExistente = RepositorioMedicamentos.Instancia.Medicamentos.FirstOrDefault(m => m.NombreComercial.ToLower() == medicamento.NombreComercial.ToLower());
+                
                 if (medicamentoExistente == null)
                 {
-                    return RepositorioMedicamentos.Instancia.AgregarMedicamento(medicamento);
+                    var resultado = RepositorioMedicamentos.Instancia.AgregarMedicamento(medicamento);
+                    if(resultado)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        return $"El medicamento {medicamento.NombreComercial} no se pudo registrar";
+                    }
                 }
                 else
                 {
-                    return false;
+                    return "El medicamento ya está registrado";
                 }
             }
             catch
             {
-                return false;
+                return "Error";
             }
         }
-        public bool ModificarMedicamento(Medicamento medicamento)
+        public string ModificarMedicamento(Medicamento medicamento)
         {
             try
             {
                 var medicamentoExistente = RepositorioMedicamentos.Instancia.Medicamentos.FirstOrDefault(m => m.NombreComercial == medicamento.NombreComercial);
                 if (medicamentoExistente != null)
                 {
-                    return RepositorioMedicamentos.Instancia.ModificarMedicamento(medicamento);
+                    var resultado = RepositorioMedicamentos.Instancia.ModificarMedicamento(medicamento);
+                    if(resultado)
+                    {
+                        return $"El medicamento {medicamento.NombreComercial} se modificó correctamente";
+                    }
+                    else
+                    {
+                        return $"El medicamento {medicamento.NombreComercial} no se pudo modificar";
+                    }
                 }
                 else
                 {
-                    return false;
+                    return "El medicamento no existe";
                 }
             }
             catch
             {
-                return false;
+                return "Error";
             }
         }
-        public bool EliminarMedicamento(Medicamento medicamento)
+        public string EliminarMedicamento(Medicamento medicamento)
         {
             try
             {
                 var medicamentoExistente = RepositorioMedicamentos.Instancia.Medicamentos.FirstOrDefault(m => m.NombreComercial == medicamento.NombreComercial);
-                if (medicamentoExistente == null)
+                var resultado = RepositorioMedicamentos.Instancia.EliminarMedicamento(medicamento);
+                if (medicamentoExistente != null)
                 {
-                    return RepositorioMedicamentos.Instancia.EliminarMedicamento(medicamento);
+                    if (resultado)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        return $"El medicamento {medicamento.NombreComercial} no se pudo eliminar";
+                    }
                 }
                 else
                 {
-                    return false;
+                    return "El medicamento no existe";
                 }
             }
             catch
             {
-                return false;
+                return "Error";
             }
         }
     }
