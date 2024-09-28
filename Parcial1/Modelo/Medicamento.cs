@@ -29,11 +29,15 @@ namespace Modelo
             var drogueriaExiste = droguerias.FirstOrDefault(dr => dr.Cuit == drogueria.Cuit);
             if (drogueriaExiste == null)
             {
-                droguerias.Add(drogueriaExiste);
+                droguerias.Add(drogueria);
                 return true;
             }
-            else { return false; }
+            else
+            {
+                return false;
+            }
         }
+
 
         public bool QuitarDrogueria(Drogueria drogueria)
         {
@@ -43,7 +47,10 @@ namespace Modelo
                 droguerias.Remove(drogueriaExiste);
                 return true;
             }
-            else { return false; }
+            else 
+            { 
+                return false; 
+            }
         }
     }
 }

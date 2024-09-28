@@ -118,5 +118,17 @@ namespace Controladora
                 return false;
             }
         }
+
+        public ReadOnlyCollection<Medicamento> ListarMedicamento()
+        {
+            try
+            {
+                return RepositorioMedicamentos.Instancia.Medicamentos;
+            }
+            catch
+            {
+                return new ReadOnlyCollection<Medicamento>(new List<Medicamento>());
+            }
+        }
     }
 }

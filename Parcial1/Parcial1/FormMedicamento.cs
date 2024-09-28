@@ -1,4 +1,5 @@
-﻿using Modelo;
+﻿using Controladora;
+using Modelo;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,8 +16,7 @@ namespace Parcial1
     public partial class FormMedicamento : Form
     {
         List<Drogueria> listaDroguerias;
-        List<Drogueria> listaDrogueriasSeleccionadas;
-        Medicamento medicamento = new Medicamento();
+        Medicamento medicamento;
         string selectedOption;
         public FormMedicamento()
         {
@@ -25,10 +25,12 @@ namespace Parcial1
 
         private void cbMedicamentoOpciones_SelectedIndexChanged(object sender, EventArgs e)
         {
+            medicamento = new Medicamento();
             txtNombreComercial.Text = "";
             txtPrecioVenta.Text = null;
             txtStockActual.Text = null;
             txtStockMinimo.Text = null;
+            cbVentaLibre.Checked = false;
 
             selectedOption = cbMedicamentoOpciones.SelectedItem.ToString();
 
@@ -146,7 +148,7 @@ namespace Parcial1
                 {
 
                     MessageBox.Show("Medicamento agregado correctamente");
-                    //ActualizarVista();
+                    ActualizarVista();
                 }
                 else
                 {
@@ -157,7 +159,6 @@ namespace Parcial1
 
         private void ModificarMedicamento()
         {
-
             medicamento.NombreComercial = txtNombreComercial.Text;
             medicamento.EsVentaLibre = cbVentaLibre.Checked;
             medicamento.PrecioVenta = Convert.ToDecimal(txtPrecioVenta.Text);
@@ -177,7 +178,7 @@ namespace Parcial1
                 {
 
                     MessageBox.Show("Medicamento modificado correctamente");
-                    //ActualizarVista();
+                    ActualizarVista();
                 }
                 else
                 {
@@ -193,7 +194,7 @@ namespace Parcial1
             if (ok)
             {
                 MessageBox.Show("Medicamento eliminado correctamente");
-                //ActualizarVista();
+                ActualizarVista();
             }
             else
             {
@@ -206,44 +207,147 @@ namespace Parcial1
             switch (selectedOption)
             {
                 case "AGREGAR":
-                    //ValidarDatos();
-                    AgregarMedicamento();
+                    if (ValidarDatos())
+                    {
+                        AgregarMedicamento();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al agregar el medicamento. Revise los datos ingresados.");
+                    }
                     break;
+
                 case "MODIFICAR":
-                    //ValidarDatos();
-                    ModificarMedicamento();
+                    if (ValidarDatos())
+                    {
+                        ModificarMedicamento();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al modificar el medicamento. Revise los datos ingresados.");
+                    }
                     break;
+
                 case "ELIMINAR":
-                    //ValidarDatos();
-                    EliminarMedicamento();
+                    if (ValidarDatos())
+                    {
+                        EliminarMedicamento();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al eliminar el medicamento. Revise los datos ingresados.");
+                    }
+                    break;
+
+                default:
+                    MessageBox.Show("Debe seleccionar una opción válida.");
                     break;
             }
         }
 
-        private void clbDroguerias_SelectedIndexChanged(object sender, EventArgs e)
+
+        private void clbDroguerias_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             if (clbDroguerias.DataSource != null)
             {
-                var seleccion = clbDroguerias.SelectedItem.ToString();
-                int cantidadElementos = medicamento.Droguerias.Count();
-                if (medicamento.Droguerias.Count() > 1)
+                var seleccion = clbDroguerias.Items[e.Index].ToString();
+                // Si el estado es 'Checked', significa que se va a agregar
+                if (e.NewValue == CheckState.Checked)
                 {
                     var seleccionExistente = medicamento.Droguerias.FirstOrDefault(ls => ls.RazonSocial == seleccion);
                     if (seleccionExistente == null)
                     {
-                        medicamento.AgregarDrogueria(Controladora.ControladoraMedicamentos.Instancia.BuscarDrogueriaPorRazonSocial(seleccion));
+                        var drogueria = Controladora.ControladoraMedicamentos.Instancia.BuscarDrogueriaPorRazonSocial(seleccion);
+                        if (drogueria != null)
+                        {
+                            medicamento.AgregarDrogueria(drogueria);
+                        }
                     }
                 }
-                else
+                // Si el estado es 'Unchecked', significa que se va a eliminar
+                else if (e.NewValue == CheckState.Unchecked)
                 {
-                    medicamento.AgregarDrogueria(Controladora.ControladoraMedicamentos.Instancia.BuscarDrogueriaPorRazonSocial(seleccion));
+                    var seleccionExistente = medicamento.Droguerias.FirstOrDefault(ls => ls.RazonSocial == seleccion);
+                    if (seleccionExistente != null)
+                    {
+                        medicamento.QuitarDrogueria(seleccionExistente);
+                    }
                 }
             }
         }
 
+
         private void FormMedicamento_Load(object sender, EventArgs e)
         {
-            listaDrogueriasSeleccionadas = new List<Drogueria>();
+            ActualizarVista();
+        }
+
+        private void ActualizarVista()
+        {
+            dataGridView1.DataSource = null;
+            var list = ControladoraMedicamentos.Instancia.ListarMedicamento();
+            dataGridView1.DataSource = list;
+            txtNombreComercial.Text = "";
+            txtPrecioVenta.Text = null;
+            txtStockActual.Text = null;
+            txtStockMinimo.Text = null;
+            cbVentaLibre.Checked = false;
+            cbMonodroga.DataSource = null;
+            clbDroguerias.DataSource = null;
+            groupBox1.Enabled = false;
+        }
+
+        private bool ValidarDatos()
+        {
+            switch (selectedOption)
+            {
+                case "AGREGAR":
+                case "MODIFICAR":
+                    if (string.IsNullOrEmpty(txtNombreComercial.Text))
+                    {
+                        MessageBox.Show("Debe ingresar el nombre comercial del medicamento.");
+                        return false;
+                    }
+                    if (string.IsNullOrEmpty(txtPrecioVenta.Text) || !decimal.TryParse(txtPrecioVenta.Text, out _))
+                    {
+                        MessageBox.Show("Debe ingresar un precio de venta válido.");
+                        return false;
+                    }
+                    if (string.IsNullOrEmpty(txtStockActual.Text) || !int.TryParse(txtStockActual.Text, out _))
+                    {
+                        MessageBox.Show("Debe ingresar una cantidad válida de stock actual.");
+                        return false;
+                    }
+                    if (string.IsNullOrEmpty(txtStockMinimo.Text) || !int.TryParse(txtStockMinimo.Text, out _))
+                    {
+                        MessageBox.Show("Debe ingresar una cantidad válida de stock mínimo.");
+                        return false;
+                    }
+                    if (cbMonodroga.SelectedItem == null)
+                    {
+                        MessageBox.Show("Debe seleccionar una monodroga.");
+                        return false;
+                    }
+                    if (clbDroguerias.CheckedItems.Count == 0)
+                    {
+                        MessageBox.Show("Debe seleccionar al menos una droguería.");
+                        return false;
+                    }
+                    break;
+
+                case "ELIMINAR":
+                    if (string.IsNullOrEmpty(txtNombreComercial.Text))
+                    {
+                        MessageBox.Show("Debe ingresar el nombre comercial del medicamento para eliminarlo.");
+                        return false;
+                    }
+                    break;
+
+                default:
+                    MessageBox.Show("Debe seleccionar una opción válida.");
+                    return false;
+            }
+            return true;
         }
     }
 }

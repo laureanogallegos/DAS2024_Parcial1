@@ -44,7 +44,10 @@
             lblNombreComercial = new Label();
             txtNombreComercial = new TextBox();
             cbMedicamentoOpciones = new ComboBox();
+            dataGridView1 = new DataGridView();
+            label1 = new Label();
             groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
             // groupBox1
@@ -87,7 +90,7 @@
             clbDroguerias.Name = "clbDroguerias";
             clbDroguerias.Size = new Size(185, 58);
             clbDroguerias.TabIndex = 1;
-            clbDroguerias.SelectedIndexChanged += clbDroguerias_SelectedIndexChanged;
+            clbDroguerias.ItemCheck += clbDroguerias_ItemCheck;
             // 
             // btnMedicamento
             // 
@@ -207,11 +210,31 @@
             cbMedicamentoOpciones.TabIndex = 1;
             cbMedicamentoOpciones.SelectedIndexChanged += cbMedicamentoOpciones_SelectedIndexChanged;
             // 
+            // dataGridView1
+            // 
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(294, 46);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowTemplate.Height = 25;
+            dataGridView1.Size = new Size(445, 282);
+            dataGridView1.TabIndex = 2;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(292, 21);
+            label1.Name = "label1";
+            label1.Size = new Size(97, 15);
+            label1.TabIndex = 3;
+            label1.Text = "MEDICAMENTOS";
+            // 
             // FormMedicamento
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 648);
+            Controls.Add(label1);
+            Controls.Add(dataGridView1);
             Controls.Add(cbMedicamentoOpciones);
             Controls.Add(groupBox1);
             Name = "FormMedicamento";
@@ -219,7 +242,9 @@
             Load += FormMedicamento_Load;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -240,5 +265,7 @@
         private CheckedListBox clbDroguerias;
         private Button btnMedicamento;
         private ComboBox cbMedicamentoOpciones;
+        private DataGridView dataGridView1;
+        private Label label1;
     }
 }
