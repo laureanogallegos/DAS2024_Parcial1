@@ -19,14 +19,14 @@ namespace Parcial1
 
         private void monodrogaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var formMonodroga = new FormMonodroga();
-            formMonodroga.ShowDialog();
+            var formMonodrogas = new FormMonodrogas();
+            formMonodrogas.ShowDialog();
         }
 
         private void drogueriaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var formDrogueria = new FormDrogueria();
-            formDrogueria.ShowDialog();
+            var formDroguerias = new FormDroguerias();
+            formDroguerias.ShowDialog();
         }
 
         private void medicamentosToolStripMenuItem_Click(object sender, EventArgs e)

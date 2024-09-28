@@ -31,9 +31,6 @@
             label1 = new Label();
             txtNombre = new TextBox();
             btnAgregar = new Button();
-            dgvMonodrogas = new DataGridView();
-            Nombre = new DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)dgvMonodrogas).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -62,35 +59,16 @@
             btnAgregar.UseVisualStyleBackColor = true;
             btnAgregar.Click += btnAgregar_Click;
             // 
-            // dgvMonodrogas
-            // 
-            dgvMonodrogas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvMonodrogas.Columns.AddRange(new DataGridViewColumn[] { Nombre });
-            dgvMonodrogas.Location = new Point(31, 135);
-            dgvMonodrogas.Name = "dgvMonodrogas";
-            dgvMonodrogas.RowTemplate.Height = 25;
-            dgvMonodrogas.Size = new Size(240, 150);
-            dgvMonodrogas.TabIndex = 3;
-            // 
-            // Nombre
-            // 
-            Nombre.DataPropertyName = "Nombre";
-            Nombre.HeaderText = "Nombre";
-            Nombre.Name = "Nombre";
-            // 
             // FormMonodroga
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(297, 307);
-            Controls.Add(dgvMonodrogas);
+            ClientSize = new Size(251, 132);
             Controls.Add(btnAgregar);
             Controls.Add(txtNombre);
             Controls.Add(label1);
             Name = "FormMonodroga";
             Text = "FormMonodroga";
-            Load += FormMonodroga_Load;
-            ((System.ComponentModel.ISupportInitialize)dgvMonodrogas).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -100,7 +78,5 @@
         private Label label1;
         private TextBox txtNombre;
         private Button btnAgregar;
-        private DataGridView dgvMonodrogas;
-        private DataGridViewTextBoxColumn Nombre;
     }
 }

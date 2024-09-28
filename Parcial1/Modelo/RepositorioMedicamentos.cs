@@ -42,37 +42,40 @@ namespace Modelo
                 try
                 {
                     using var command = new SqlCommand();
-                    //otra forma de hacerlo es usando Store Procedures
-                    command.CommandText = "SP_RECUPERARMEDICAMENTOS";
                     command.CommandType = System.Data.CommandType.StoredProcedure;
-                    /////////////////////////
+                    command.CommandText = "SP_RECUPERARMEDICAMENTOS";
                     command.Connection = connection;
                     command.Connection.Open();
+
                     var reader = command.ExecuteReader();
-                    while (reader.Read())//lee a traves de todas las filas que existen en la tabla
+                    while (reader.Read())
                     {
                         //por cada fila que creo tengo que asignar manualmente cada columna con cada propiedad
-                        var medicamento = new Medicamento();
-                        medicamento.NombreComercial = (reader["NOMBRE_COMERCIAL"].ToString());
-                        medicamento.VentaLibre = Convert.ToBoolean(reader["ES_VENTA_LIBRE"]);
-                        medicamento.PrecioVenta = Convert.ToDecimal(reader["PRECIO_VENTA"]);
-                        medicamento.StockActual = Convert.ToInt32(reader["STOCK"]);
-                        medicamento.StockMinimo = Convert.ToInt32(reader["STOCK_MINIMO"]);
-                        medicamento.Monodroga = RepositorioMonodrogas.Instancia.Monodrogas.FirstOrDefault(x=>x.Nombre == reader["NOMBRE_MONODROGA"].ToString());
-                        medicamentos.Add(medicamento);
+                        var medicamento = new Medicamento()
+                        {
+                            NombreComercial = reader["NOMBRE_COMERCIAL"].ToString(),
+                            VentaLibre = Convert.ToBoolean(reader["ES_VENTA_LIBRE"]),
+                            PrecioVenta = Convert.ToDecimal(reader["PRECIO_VENTA"]),
+                            StockActual = Convert.ToInt32(reader["STOCK"]),
+                            StockMinimo = Convert.ToInt32(reader["STOCK_MINIMO"]),
+                            Monodroga = RepositorioMonodrogas.Instancia.Monodrogas.FirstOrDefault(x => x.Nombre == reader["NOMBRE_MONODROGA"].ToString())
+
+                        };
+
                         // Lectura de las droguerias
                         command.Parameters.Clear();
                         command.CommandText = "SP_RECUPERARDROGUERIASMEDICAMENTOS";
+                        command.Parameters.Add("@NOMBRE_COMERCIAL", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.NombreComercial;
                         var drDrogueria = command.ExecuteReader();
-                        var drogueria = new Drogueria();
                         while (drDrogueria.Read())
                         {
-                            command.Parameters.Add("@NOMBRE_COMERCIAL", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.NombreComercial;
-                            command.Parameters.Add("@CUIT", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.Cuit;
-                        }
-                        medicamento.AgregarDrogueria(drogueria);
-                    }
+                            var cuitDrogueria = drDrogueria["CUIT"].ToString();
+                            var drogueria = RepositorioDroguerias.Instancia.ListaDroguerias.FirstOrDefault(x => x.Cuit == cuitDrogueria);
+                            medicamento.AgregarDrogueria(drogueria);
+                        };
 
+                        medicamentos.Add(medicamento);
+                    }
                     command.Connection.Close();
                 }
                 catch (SqlException ex)
@@ -91,7 +94,8 @@ namespace Modelo
         public bool Agregar(Medicamento medicamento)
         {
             var fueAgregado = false;
-            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection");
+            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
+            connection.Open();
             var transaction = connection.BeginTransaction();
             try
             {
@@ -109,18 +113,19 @@ namespace Modelo
                 SqlCommand.Parameters.Add("@MONODROGA", System.Data.SqlDbType.NVarChar,50).Value = medicamento.Monodroga.Nombre;
                 SqlCommand.ExecuteNonQuery();
 
-                SqlCommand.Parameters.Clear();
-                SqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
-                SqlCommand.CommandText = "@SP_AGREGAR_DROGUERIASMEDICAMENTO";
-                SqlCommand.Parameters.Add("@NOMBRE_COMERCIAL", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.NombreComercial;
-                SqlCommand.Parameters.Add("@CUIT", System.Data.SqlDbType.NVarChar, 20);
-                foreach (var item in medicamento.ListadoDroguerias)
+                using var SqlCommand2 = new SqlCommand();
+                SqlCommand2.Connection = connection;
+                SqlCommand2.Transaction = transaction;
+                SqlCommand2.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlCommand2.CommandText = "@SP_AGREGAR_DROGUERIASMEDICAMENTO";
+                SqlCommand2.Parameters.Add("@NOMBRE_COMERCIAL", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.NombreComercial;
+                SqlCommand2.Parameters.Add("@CUIT", System.Data.SqlDbType.NVarChar, 20);
+                foreach (var drogueria in medicamento.ListadoDroguerias)
                 {
-                    SqlCommand.Parameters["@CUIT"].Value = item.Cuit;
-                    SqlCommand.ExecuteNonQuery();
+                    SqlCommand2.Parameters["@CUIT"].Value = drogueria.Cuit;
+                    SqlCommand2.ExecuteNonQuery();
                 }
 
-                SqlCommand.ExecuteNonQuery();
                 transaction.Commit();
                 connection.Close();
                 medicamentos.Add(medicamento);
@@ -137,7 +142,8 @@ namespace Modelo
         public bool Modificar(Medicamento medicamento)
         {
             var fueModificado = false;
-            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection");
+            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
+            connection.Open();
             var transaction = connection.BeginTransaction();
             try
             {
@@ -155,18 +161,19 @@ namespace Modelo
                 SqlCommand.Parameters.Add("@MONODROGA", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.Monodroga.Nombre;
                 SqlCommand.ExecuteNonQuery();
 
-                SqlCommand.Parameters.Clear();
-                SqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
-                SqlCommand.CommandText = "@SP_AGREGAR_DROGUERIASMEDICAMENTO";
-                SqlCommand.Parameters.Add("@NOMBRE_COMERCIAL", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.NombreComercial;
-                SqlCommand.Parameters.Add("@CUIT", System.Data.SqlDbType.NVarChar, 20);
+                using var SqlCommand2 = new SqlCommand();
+                SqlCommand2.Connection = connection;
+                SqlCommand2.Transaction = transaction;
+                SqlCommand2.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlCommand2.CommandText = "@SP_AGREGAR_DROGUERIASMEDICAMENTO";
+                SqlCommand2.Parameters.Add("@NOMBRE_COMERCIAL", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.NombreComercial;
+                SqlCommand2.Parameters.Add("@CUIT", System.Data.SqlDbType.NVarChar, 20);
                 foreach (var item in medicamento.ListadoDroguerias)
                 {
-                    SqlCommand.Parameters["@CUIT"].Value = item.Cuit;
-                    SqlCommand.ExecuteNonQuery();
+                    SqlCommand2.Parameters["@CUIT"].Value = item.Cuit;
+                    SqlCommand2.ExecuteNonQuery();
                 }
 
-                SqlCommand.ExecuteNonQuery();
                 transaction.Commit();
                 connection.Close();
                 medicamentos.Remove(medicamento);
@@ -184,7 +191,8 @@ namespace Modelo
         public bool Eliminar(Medicamento medicamento)
         {
             var fueEliminado = false;
-            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection");
+            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
+            connection.Open();
             var transaction = connection.BeginTransaction();
             try
             {
@@ -199,8 +207,8 @@ namespace Modelo
                 SqlCommand.ExecuteNonQuery();
                 transaction.Commit();
                 connection.Close();
+
                 medicamentos.Remove(medicamento);
-                medicamentos.Add(medicamento);
                 fueEliminado = true;
             }
             catch (Exception ex)

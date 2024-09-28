@@ -24,9 +24,9 @@ namespace Modelo
             try
             {
                 using var command = new SqlCommand();
-                //otra forma de hacerlo es usando Store Procedures
-                command.CommandText = "SP_RECUPERARDROGUERIAS";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
+                    //otra forma de hacerlo es usando Store Procedures
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.CommandText = "SP_RECUPERARDROGUERIAS";
                 /////////////////////////
                 command.Connection = connection;
                 command.Connection.Open();
@@ -73,7 +73,8 @@ namespace Modelo
         public bool Agregar(Drogueria drogueria)
         {
             var fueAgregado = false;
-            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection");
+            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
+            connection.Open();
             var transaction = connection.BeginTransaction();
             try
             {
@@ -83,10 +84,10 @@ namespace Modelo
                 SqlCommand.Connection = connection;
                 SqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 SqlCommand.CommandText = "@SP_AGREGAR_DROGUERIA";
-                SqlCommand.Parameters.Add("@CUIT ", System.Data.SqlDbType.NVarChar,20).Value = drogueria.Cuit;
-                SqlCommand.Parameters.Add("@RAZONSOCIAL ", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.RazonSocial;
-                SqlCommand.Parameters.Add("@DIRECCION ", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.Direccion;
-                SqlCommand.Parameters.Add("@EMAIL ", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.Email;
+                SqlCommand.Parameters.Add("@CUIT", System.Data.SqlDbType.NVarChar,20).Value = drogueria.Cuit;
+                SqlCommand.Parameters.Add("@RAZONSOCIAL", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.RazonSocial;
+                SqlCommand.Parameters.Add("@DIRECCION", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.Direccion;
+                SqlCommand.Parameters.Add("@EMAIL", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.Email;
                 SqlCommand.ExecuteNonQuery();
                 transaction.Commit();
                 connection.Close();
@@ -104,7 +105,8 @@ namespace Modelo
         public bool Modificar(Drogueria drogueria)
         {
             var fueModificado = false;
-            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection");
+            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
+            connection.Open();
             var transaction = connection.BeginTransaction();
             try
             {
@@ -114,10 +116,10 @@ namespace Modelo
                 SqlCommand.Connection = connection;
                 SqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 SqlCommand.CommandText = "@SP_MODIFICAR_DROGUERIA";
-                SqlCommand.Parameters.Add("@CUIT ", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.Cuit;
-                SqlCommand.Parameters.Add("@RAZONSOCIAL ", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.RazonSocial;
-                SqlCommand.Parameters.Add("@DIRECCION ", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.Direccion;
-                SqlCommand.Parameters.Add("@EMAIL ", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.Email;
+                SqlCommand.Parameters.Add("@CUIT", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.Cuit;
+                SqlCommand.Parameters.Add("@RAZONSOCIAL", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.RazonSocial;
+                SqlCommand.Parameters.Add("@DIRECCION", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.Direccion;
+                SqlCommand.Parameters.Add("@EMAIL", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.Email;
                 SqlCommand.ExecuteNonQuery();
                 transaction.Commit();
                 connection.Close();
@@ -135,7 +137,8 @@ namespace Modelo
         public bool Eliminar(Drogueria drogueria)
         {
             var fueEliminado = false;
-            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection");
+            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
+            connection.Open();
             var transaction = connection.BeginTransaction();
 
             try
@@ -146,7 +149,7 @@ namespace Modelo
                 SqlCommand.Connection = connection;
                 SqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 SqlCommand.CommandText = "@SP_ELIMINAR_DROGUERIA";
-                SqlCommand.Parameters.Add("@CUIT ", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.Cuit;
+                SqlCommand.Parameters.Add("@CUIT", System.Data.SqlDbType.NVarChar, 20).Value = drogueria.Cuit;
 
                 SqlCommand.ExecuteNonQuery();
                 transaction.Commit();

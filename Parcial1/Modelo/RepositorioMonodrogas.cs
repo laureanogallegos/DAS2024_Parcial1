@@ -22,9 +22,9 @@ namespace Modelo
             try
             {
                 using var command = new SqlCommand();
-                //otra forma de hacerlo es usando Store Procedures
-                command.CommandText = "SP_RECUPERARMONODROGAS";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
+                    //otra forma de hacerlo es usando Store Procedures
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.CommandText = "SP_RECUPERARMONODROGAS";
                 /////////////////////////
                 command.Connection = connection;
                 command.Connection.Open();
@@ -66,7 +66,8 @@ namespace Modelo
         public bool Agregar(Monodroga monodroga)
         {
             var fueAgregado = false;
-            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection");
+            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
+            connection.Open();
             var transaction = connection.BeginTransaction();
             try
             {
@@ -76,7 +77,7 @@ namespace Modelo
                 SqlCommand.Connection = connection;
                 SqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 SqlCommand.CommandText = "@SP_AGREGAR_MONODROGA";
-                SqlCommand.Parameters.Add("@NOMBRE ", System.Data.SqlDbType.NVarChar, 20).Value = monodroga.Nombre;
+                SqlCommand.Parameters.Add("@NOMBRE", System.Data.SqlDbType.NVarChar, 20).Value = monodroga.Nombre;
                 SqlCommand.ExecuteNonQuery();
                 transaction.Commit();
                 connection.Close();
@@ -94,7 +95,8 @@ namespace Modelo
         public bool Modificar(Monodroga monodroga)
         {
             var fueModificado = false;
-            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection");
+            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
+            connection.Open();
             var transaction = connection.BeginTransaction();
             try
             {
@@ -104,7 +106,7 @@ namespace Modelo
                 SqlCommand.Connection = connection;
                 SqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 SqlCommand.CommandText = "@SP_MODIFICAR_MONODROGA";
-                SqlCommand.Parameters.Add("@NOMBRE ", System.Data.SqlDbType.NVarChar, 20).Value = monodroga.Nombre;
+                SqlCommand.Parameters.Add("@NOMBRE", System.Data.SqlDbType.NVarChar, 20).Value = monodroga.Nombre;
                 SqlCommand.ExecuteNonQuery();
                 transaction.Commit();
                 connection.Close();
@@ -123,17 +125,17 @@ namespace Modelo
         public bool Eliminar(Monodroga monodroga)
         {
             var fueEliminado = false;
-            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection");
+            var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
+            connection.Open();
             var transaction = connection.BeginTransaction();
             try
             {
-
                 using var SqlCommand = new SqlCommand();
                 SqlCommand.Transaction = transaction;
                 SqlCommand.Connection = connection;
                 SqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 SqlCommand.CommandText = "@SP_ELIMINAR_MONODROGA";
-                SqlCommand.Parameters.Add("@NOMBRE ", System.Data.SqlDbType.NVarChar, 20).Value = monodroga.Nombre;
+                SqlCommand.Parameters.Add("@NOMBRE", System.Data.SqlDbType.NVarChar, 20).Value = monodroga.Nombre;
                 SqlCommand.ExecuteNonQuery();
                 transaction.Commit();
                 connection.Close();
