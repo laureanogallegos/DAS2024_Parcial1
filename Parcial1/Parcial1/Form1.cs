@@ -6,6 +6,7 @@ namespace Parcial1
     public partial class Form1 : Form
     {
         private List<Drogueria> droguerias;
+        Drogueria drogueriaSeleccionada;
         public Form1()
         {
             InitializeComponent();
@@ -31,8 +32,8 @@ namespace Parcial1
             var drogueria = ControladoraMedicamentos.Instancia.BuscarDrogueria(cmbDroguerias.Text);
             if (drogueria != null)
             {
-                var filtrarEnLista = droguerias.FirstOrDefault(dr=>dr.Cuit==drogueria.Cuit);
-                if (filtrarEnLista==null)
+                var filtrarEnLista = droguerias.FirstOrDefault(dr => dr.Cuit == drogueria.Cuit);
+                if (filtrarEnLista == null)
                 {
                     droguerias.Add(drogueria);
                     ActualizarGrilla();
@@ -98,6 +99,20 @@ namespace Parcial1
         {
             FormMedicamentos formMedicamentos = new FormMedicamentos();
             formMedicamentos.ShowDialog();
+        }
+
+        private void dgvDrogueriasDelMedicamento_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            drogueriaSeleccionada = ControladoraMedicamentos.Instancia.ListarDroguerias().FirstOrDefault(dr => dr.Cuit == long.Parse(dgvDrogueriasDelMedicamento.Rows[e.RowIndex].Cells[0].Value.ToString()));
+        }
+
+        private void btnEliminarDrogueria_Click(object sender, EventArgs e)
+        {
+            if (drogueriaSeleccionada!=null)
+            {
+                droguerias.Remove(drogueriaSeleccionada);
+                ActualizarGrilla();
+            }
         }
     }
 }

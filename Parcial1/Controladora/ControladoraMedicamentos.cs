@@ -43,9 +43,9 @@ namespace Controladora
             }
             
         }
-        public bool ModificarMedicamento(Medicamento medicamento, Medicamento medicamentoActualizado)
+        public bool ModificarMedicamento(Medicamento medicamentoActualizado)
         {
-            return RepositorioMedicamentos.Instancia.Modificar(medicamento,medicamentoActualizado);
+            return RepositorioMedicamentos.Instancia.Modificar(medicamentoActualizado);
         }
         public bool EliminarMedicamento(Medicamento medicamento)
         {

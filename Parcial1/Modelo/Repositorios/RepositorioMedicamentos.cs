@@ -118,7 +118,7 @@ namespace Modelo.Repositorios
                 }
         }
 
-        public bool Modificar(Medicamento medicamento, Medicamento medicamentoActualizado)
+        public bool Modificar(Medicamento medicamentoActualizado)
         {
             using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
 
@@ -134,7 +134,7 @@ namespace Modelo.Repositorios
                     var transaction = connection.BeginTransaction();
                     command.Transaction = transaction;
 
-                    command.Parameters.Add("@NOMBRE_COMERCIAL", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.NombreComercial;
+                    command.Parameters.Add("@NOMBRE_COMERCIAL", System.Data.SqlDbType.NVarChar, 50).Value = medicamentoActualizado.NombreComercial;
                     command.Parameters.Add("@ES_VENTA_LIBRE", System.Data.SqlDbType.Bit).Value = medicamentoActualizado.VentaLibre;
                     command.Parameters.Add("@PRECIO_VENTA", System.Data.SqlDbType.Decimal).Value = medicamentoActualizado.PrecioVenta;
                     command.Parameters.Add("@STOCK", System.Data.SqlDbType.Int).Value = medicamentoActualizado.StockActual;
@@ -148,9 +148,9 @@ namespace Modelo.Repositorios
                     cmdDrogueria.Transaction = transaction;
                     cmdDrogueria.CommandType = System.Data.CommandType.StoredProcedure;
                     cmdDrogueria.CommandText = "SP_AGREGAR_DROGUERIASMEDICAMENTO";
-                    cmdDrogueria.Parameters.Add("@NOMBRE_COMERCIAL", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.NombreComercial;
+                    cmdDrogueria.Parameters.Add("@NOMBRE_COMERCIAL", System.Data.SqlDbType.NVarChar, 50).Value = medicamentoActualizado.NombreComercial;
                     cmdDrogueria.Parameters.Add("@CUIT", System.Data.SqlDbType.BigInt);
-                    foreach (Drogueria drogueria in medicamento.ListarDroguerias())
+                    foreach (Drogueria drogueria in medicamentoActualizado.ListarDroguerias())
                     {
                         cmdDrogueria.Parameters["@CUIT"].Value = drogueria.Cuit;
                         cmdDrogueria.ExecuteNonQuery();
@@ -158,7 +158,8 @@ namespace Modelo.Repositorios
 
                     transaction.Commit();
                     connection.Close();
-                    medicamentos.Remove(medicamento);
+                    var filtrarViejoMedicamento = medicamentos.FirstOrDefault(mev=>mev.NombreComercial==medicamentoActualizado.NombreComercial);
+                    medicamentos.Remove(filtrarViejoMedicamento);
                     medicamentos.Add(medicamentoActualizado);
                     return true;
                 }

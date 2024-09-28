@@ -41,6 +41,12 @@
             label3 = new Label();
             btnModificar = new Button();
             lblLeyenda = new Label();
+            btnEliminarDrogueria = new Button();
+            btnCargarDrogueria = new Button();
+            dgvDrogueriasDelMedicamento = new DataGridView();
+            label6 = new Label();
+            cmbDroguerias = new ComboBox();
+            ((System.ComponentModel.ISupportInitialize)dgvDrogueriasDelMedicamento).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -155,11 +161,64 @@
             lblLeyenda.Text = "label6";
             lblLeyenda.Visible = false;
             // 
+            // btnEliminarDrogueria
+            // 
+            btnEliminarDrogueria.Location = new Point(428, 281);
+            btnEliminarDrogueria.Name = "btnEliminarDrogueria";
+            btnEliminarDrogueria.Size = new Size(175, 30);
+            btnEliminarDrogueria.TabIndex = 30;
+            btnEliminarDrogueria.Text = "ELIMINAR DROGUERIA";
+            btnEliminarDrogueria.UseVisualStyleBackColor = true;
+            btnEliminarDrogueria.Click += btnEliminarDrogueria_Click;
+            // 
+            // btnCargarDrogueria
+            // 
+            btnCargarDrogueria.Location = new Point(247, 281);
+            btnCargarDrogueria.Name = "btnCargarDrogueria";
+            btnCargarDrogueria.Size = new Size(175, 30);
+            btnCargarDrogueria.TabIndex = 29;
+            btnCargarDrogueria.Text = "CARGAR DROGUERIA";
+            btnCargarDrogueria.UseVisualStyleBackColor = true;
+            btnCargarDrogueria.Click += btnCargarDrogueria_Click;
+            // 
+            // dgvDrogueriasDelMedicamento
+            // 
+            dgvDrogueriasDelMedicamento.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvDrogueriasDelMedicamento.Location = new Point(247, 67);
+            dgvDrogueriasDelMedicamento.Name = "dgvDrogueriasDelMedicamento";
+            dgvDrogueriasDelMedicamento.RowHeadersWidth = 51;
+            dgvDrogueriasDelMedicamento.RowTemplate.Height = 29;
+            dgvDrogueriasDelMedicamento.Size = new Size(485, 206);
+            dgvDrogueriasDelMedicamento.TabIndex = 28;
+            dgvDrogueriasDelMedicamento.CellClick += dgvDrogueriasDelMedicamento_CellClick;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(247, 10);
+            label6.Name = "label6";
+            label6.Size = new Size(82, 20);
+            label6.TabIndex = 27;
+            label6.Text = "Droguerias";
+            // 
+            // cmbDroguerias
+            // 
+            cmbDroguerias.FormattingEnabled = true;
+            cmbDroguerias.Location = new Point(247, 32);
+            cmbDroguerias.Name = "cmbDroguerias";
+            cmbDroguerias.Size = new Size(162, 28);
+            cmbDroguerias.TabIndex = 26;
+            // 
             // ModificarMedicamento
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(245, 395);
+            ClientSize = new Size(773, 395);
+            Controls.Add(btnEliminarDrogueria);
+            Controls.Add(btnCargarDrogueria);
+            Controls.Add(dgvDrogueriasDelMedicamento);
+            Controls.Add(label6);
+            Controls.Add(cmbDroguerias);
             Controls.Add(lblLeyenda);
             Controls.Add(btnModificar);
             Controls.Add(label1);
@@ -176,6 +235,7 @@
             Name = "ModificarMedicamento";
             Text = "Modificar";
             Load += ModificarMedicamento_Load;
+            ((System.ComponentModel.ISupportInitialize)dgvDrogueriasDelMedicamento).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -195,5 +255,10 @@
         private Label label3;
         private Button btnModificar;
         private Label lblLeyenda;
+        private Button btnEliminarDrogueria;
+        private Button btnCargarDrogueria;
+        private DataGridView dgvDrogueriasDelMedicamento;
+        private Label label6;
+        private ComboBox cmbDroguerias;
     }
 }

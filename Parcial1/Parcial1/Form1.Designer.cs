@@ -43,6 +43,7 @@
             label5 = new Label();
             label6 = new Label();
             groupBox1 = new GroupBox();
+            btnEliminarDrogueria = new Button();
             btnCargarDrogueria = new Button();
             dgvDrogueriasDelMedicamento = new DataGridView();
             lblLeyenda = new Label();
@@ -172,6 +173,7 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(btnEliminarDrogueria);
             groupBox1.Controls.Add(btnCargarDrogueria);
             groupBox1.Controls.Add(dgvDrogueriasDelMedicamento);
             groupBox1.Controls.Add(label1);
@@ -194,11 +196,21 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Registro Medicamento";
             // 
+            // btnEliminarDrogueria
+            // 
+            btnEliminarDrogueria.Location = new Point(363, 294);
+            btnEliminarDrogueria.Name = "btnEliminarDrogueria";
+            btnEliminarDrogueria.Size = new Size(175, 30);
+            btnEliminarDrogueria.TabIndex = 16;
+            btnEliminarDrogueria.Text = "ELIMINAR DROGUERIA";
+            btnEliminarDrogueria.UseVisualStyleBackColor = true;
+            btnEliminarDrogueria.Click += btnEliminarDrogueria_Click;
+            // 
             // btnCargarDrogueria
             // 
-            btnCargarDrogueria.Location = new Point(350, 45);
+            btnCargarDrogueria.Location = new Point(182, 294);
             btnCargarDrogueria.Name = "btnCargarDrogueria";
-            btnCargarDrogueria.Size = new Size(162, 29);
+            btnCargarDrogueria.Size = new Size(175, 30);
             btnCargarDrogueria.TabIndex = 15;
             btnCargarDrogueria.Text = "CARGAR DROGUERIA";
             btnCargarDrogueria.UseVisualStyleBackColor = true;
@@ -213,6 +225,7 @@
             dgvDrogueriasDelMedicamento.RowTemplate.Height = 29;
             dgvDrogueriasDelMedicamento.Size = new Size(485, 206);
             dgvDrogueriasDelMedicamento.TabIndex = 14;
+            dgvDrogueriasDelMedicamento.CellClick += dgvDrogueriasDelMedicamento_CellClick;
             // 
             // lblLeyenda
             // 
@@ -274,5 +287,6 @@
         private DataGridView dgvDrogueriasDelMedicamento;
         private Label lblLeyenda;
         private Button btnVerMedicamentos;
+        private Button btnEliminarDrogueria;
     }
 }
