@@ -20,6 +20,8 @@ namespace Modelo
             {
                 medicamentos = new List<Medicamento>();
                 configuration = ConfigurationHelper.GetConfiguration("appsettings.json");
+                string connectionString = configuration.GetConnectionString("DefaultConnection");
+                connection = new SqlConnection(connectionString);
                 Recuperar();
             }
 

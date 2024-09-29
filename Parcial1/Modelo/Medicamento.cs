@@ -9,12 +9,12 @@ namespace Modelo
     public class Medicamento
     {
         public string NombreComercial { get; set; }
+        public Monodroga monodroga { get; set; }
         public decimal PrecioVenta {  get; set; }
         public int Stock {  get; set; }
         public int StockMinimo { get; set; }
-        public string NombreMonodroga { get; set; }
         public bool EsVentaLibre { get; set; }
-        public Monodroga monodroga { get; set; }
+        
         public List<Drogueria> ListaDeDroguerias { get; set; } = new List<Drogueria>();
 
         
@@ -34,6 +34,7 @@ namespace Modelo
             }
         }
 
+       
 
         public bool EliminarDrogueria(Drogueria drogueria)
         {

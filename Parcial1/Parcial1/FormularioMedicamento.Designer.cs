@@ -28,56 +28,58 @@
         /// </summary>
         private void InitializeComponent()
         {
-            btnCargar = new Button();
-            btnVolver = new Button();
+            btn_CargarMed = new Button();
+            btn_Volver = new Button();
             groupBox1 = new GroupBox();
-            button4 = new Button();
-            button3 = new Button();
+            dgv_Drogueiras = new DataGridView();
+            btn_EliminarDrog = new Button();
+            btn_AsociarDrog = new Button();
             label6 = new Label();
-            comboBox1 = new ComboBox();
+            cbDroguerias = new ComboBox();
             groupBox2 = new GroupBox();
             label5 = new Label();
             txtPrecio = new TextBox();
             label4 = new Label();
             cbMonodroga = new ComboBox();
-            cbVenta = new CheckBox();
+            chkVenta = new CheckBox();
             label3 = new Label();
-            txtPrecioVenta = new TextBox();
+            txtStockMinimo = new TextBox();
             label2 = new Label();
-            textBox1 = new TextBox();
+            txtStock = new TextBox();
             txtNombre = new TextBox();
             label1 = new Label();
-            dataGridView1 = new DataGridView();
             groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgv_Drogueiras).BeginInit();
             groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
-            // btnCargar
+            // btn_CargarMed
             // 
-            btnCargar.Location = new Point(278, 227);
-            btnCargar.Name = "btnCargar";
-            btnCargar.Size = new Size(115, 43);
-            btnCargar.TabIndex = 6;
-            btnCargar.Text = "Cargar Medicamento";
-            btnCargar.UseVisualStyleBackColor = true;
+            btn_CargarMed.Location = new Point(278, 227);
+            btn_CargarMed.Name = "btn_CargarMed";
+            btn_CargarMed.Size = new Size(115, 43);
+            btn_CargarMed.TabIndex = 6;
+            btn_CargarMed.Text = "Cargar Medicamento";
+            btn_CargarMed.UseVisualStyleBackColor = true;
+            btn_CargarMed.Click += btn_CargarMed_Click;
             // 
-            // btnVolver
+            // btn_Volver
             // 
-            btnVolver.Location = new Point(417, 229);
-            btnVolver.Name = "btnVolver";
-            btnVolver.Size = new Size(114, 43);
-            btnVolver.TabIndex = 7;
-            btnVolver.Text = "Volver";
-            btnVolver.UseVisualStyleBackColor = true;
+            btn_Volver.Location = new Point(417, 227);
+            btn_Volver.Name = "btn_Volver";
+            btn_Volver.Size = new Size(114, 43);
+            btn_Volver.TabIndex = 7;
+            btn_Volver.Text = "Volver";
+            btn_Volver.UseVisualStyleBackColor = true;
+            btn_Volver.Click += btn_Volver_Click;
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(dataGridView1);
-            groupBox1.Controls.Add(button4);
-            groupBox1.Controls.Add(button3);
+            groupBox1.Controls.Add(dgv_Drogueiras);
+            groupBox1.Controls.Add(btn_EliminarDrog);
+            groupBox1.Controls.Add(btn_AsociarDrog);
             groupBox1.Controls.Add(label6);
-            groupBox1.Controls.Add(comboBox1);
+            groupBox1.Controls.Add(cbDroguerias);
             groupBox1.Location = new Point(399, 12);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(399, 192);
@@ -85,23 +87,34 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Puntos de Ventas";
             // 
-            // button4
+            // dgv_Drogueiras
             // 
-            button4.Location = new Point(318, 161);
-            button4.Name = "button4";
-            button4.Size = new Size(75, 23);
-            button4.TabIndex = 20;
-            button4.Text = "Eliminar";
-            button4.UseVisualStyleBackColor = true;
+            dgv_Drogueiras.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_Drogueiras.Location = new Point(6, 61);
+            dgv_Drogueiras.Name = "dgv_Drogueiras";
+            dgv_Drogueiras.RowTemplate.Height = 25;
+            dgv_Drogueiras.Size = new Size(306, 119);
+            dgv_Drogueiras.TabIndex = 21;
             // 
-            // button3
+            // btn_EliminarDrog
             // 
-            button3.Location = new Point(318, 131);
-            button3.Name = "button3";
-            button3.Size = new Size(75, 23);
-            button3.TabIndex = 19;
-            button3.Text = "Asociar";
-            button3.UseVisualStyleBackColor = true;
+            btn_EliminarDrog.Location = new Point(318, 161);
+            btn_EliminarDrog.Name = "btn_EliminarDrog";
+            btn_EliminarDrog.Size = new Size(75, 23);
+            btn_EliminarDrog.TabIndex = 20;
+            btn_EliminarDrog.Text = "Eliminar";
+            btn_EliminarDrog.UseVisualStyleBackColor = true;
+            btn_EliminarDrog.Click += btn_EliminarDrog_Click;
+            // 
+            // btn_AsociarDrog
+            // 
+            btn_AsociarDrog.Location = new Point(318, 131);
+            btn_AsociarDrog.Name = "btn_AsociarDrog";
+            btn_AsociarDrog.Size = new Size(75, 23);
+            btn_AsociarDrog.TabIndex = 19;
+            btn_AsociarDrog.Text = "Asociar";
+            btn_AsociarDrog.UseVisualStyleBackColor = true;
+            btn_AsociarDrog.Click += btn_AsociarDrog_Click;
             // 
             // label6
             // 
@@ -112,13 +125,13 @@
             label6.TabIndex = 18;
             label6.Text = "Droguerias";
             // 
-            // comboBox1
+            // cbDroguerias
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(74, 32);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(121, 23);
-            comboBox1.TabIndex = 17;
+            cbDroguerias.FormattingEnabled = true;
+            cbDroguerias.Location = new Point(74, 32);
+            cbDroguerias.Name = "cbDroguerias";
+            cbDroguerias.Size = new Size(121, 23);
+            cbDroguerias.TabIndex = 17;
             // 
             // groupBox2
             // 
@@ -126,11 +139,11 @@
             groupBox2.Controls.Add(txtPrecio);
             groupBox2.Controls.Add(label4);
             groupBox2.Controls.Add(cbMonodroga);
-            groupBox2.Controls.Add(cbVenta);
+            groupBox2.Controls.Add(chkVenta);
             groupBox2.Controls.Add(label3);
-            groupBox2.Controls.Add(txtPrecioVenta);
+            groupBox2.Controls.Add(txtStockMinimo);
             groupBox2.Controls.Add(label2);
-            groupBox2.Controls.Add(textBox1);
+            groupBox2.Controls.Add(txtStock);
             groupBox2.Controls.Add(txtNombre);
             groupBox2.Controls.Add(label1);
             groupBox2.Location = new Point(12, 12);
@@ -173,15 +186,15 @@
             cbMonodroga.Size = new Size(121, 23);
             cbMonodroga.TabIndex = 20;
             // 
-            // cbVenta
+            // chkVenta
             // 
-            cbVenta.AutoSize = true;
-            cbVenta.Location = new Point(160, 157);
-            cbVenta.Name = "cbVenta";
-            cbVenta.Size = new Size(81, 19);
-            cbVenta.TabIndex = 19;
-            cbVenta.Text = "VentaLibre";
-            cbVenta.UseVisualStyleBackColor = true;
+            chkVenta.AutoSize = true;
+            chkVenta.Location = new Point(160, 157);
+            chkVenta.Name = "chkVenta";
+            chkVenta.Size = new Size(81, 19);
+            chkVenta.TabIndex = 19;
+            chkVenta.Text = "VentaLibre";
+            chkVenta.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
@@ -192,12 +205,12 @@
             label3.TabIndex = 18;
             label3.Text = "Stock Minimo";
             // 
-            // txtPrecioVenta
+            // txtStockMinimo
             // 
-            txtPrecioVenta.Location = new Point(9, 157);
-            txtPrecioVenta.Name = "txtPrecioVenta";
-            txtPrecioVenta.Size = new Size(108, 23);
-            txtPrecioVenta.TabIndex = 17;
+            txtStockMinimo.Location = new Point(9, 157);
+            txtStockMinimo.Name = "txtStockMinimo";
+            txtStockMinimo.Size = new Size(108, 23);
+            txtStockMinimo.TabIndex = 17;
             // 
             // label2
             // 
@@ -208,12 +221,12 @@
             label2.TabIndex = 16;
             label2.Text = "Stock Actual";
             // 
-            // textBox1
+            // txtStock
             // 
-            textBox1.Location = new Point(17, 100);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(100, 23);
-            textBox1.TabIndex = 15;
+            txtStock.Location = new Point(17, 100);
+            txtStock.Name = "txtStock";
+            txtStock.Size = new Size(100, 23);
+            txtStock.TabIndex = 15;
             // 
             // txtNombre
             // 
@@ -231,15 +244,6 @@
             label1.TabIndex = 13;
             label1.Text = "Nombre Comercial";
             // 
-            // dataGridView1
-            // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(6, 61);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowTemplate.Height = 25;
-            dataGridView1.Size = new Size(306, 119);
-            dataGridView1.TabIndex = 21;
-            // 
             // FormularioMedicamento
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -247,38 +251,39 @@
             ClientSize = new Size(800, 284);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
-            Controls.Add(btnVolver);
-            Controls.Add(btnCargar);
+            Controls.Add(btn_Volver);
+            Controls.Add(btn_CargarMed);
             Name = "FormularioMedicamento";
             Text = "FormularioMedicamento";
+            Load += FormularioMedicamento_Load;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgv_Drogueiras).EndInit();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-        private Button btnCargar;
-        private Button btnVolver;
+        private Button btn_CargarMed;
+        private Button btn_Volver;
         private GroupBox groupBox1;
-        private Button button4;
-        private Button button3;
+        private Button btn_EliminarDrog;
+        private Button btn_AsociarDrog;
         private Label label6;
-        private ComboBox comboBox1;
+        private ComboBox cbDroguerias;
         private GroupBox groupBox2;
         private Label label5;
         private TextBox txtPrecio;
         private Label label4;
         private ComboBox cbMonodroga;
-        private CheckBox cbVenta;
+        private CheckBox chkVenta;
         private Label label3;
-        private TextBox txtPrecioVenta;
+        private TextBox txtStockMinimo;
         private Label label2;
-        private TextBox textBox1;
+        private TextBox txtStock;
         private TextBox txtNombre;
         private Label label1;
-        private DataGridView dataGridView1;
+        private DataGridView dgv_Drogueiras;
     }
 }

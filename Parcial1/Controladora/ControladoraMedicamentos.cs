@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Controladora
 {
-    internal class ControladoraMedicamentos
+    public class ControladoraMedicamentos
     {
         private static readonly Lazy<ControladoraMedicamentos> instancia = new(() => new ControladoraMedicamentos());
 
