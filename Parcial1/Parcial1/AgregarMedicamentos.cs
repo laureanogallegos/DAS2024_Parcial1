@@ -41,6 +41,7 @@ namespace Parcial1
                     MessageBox.Show("No se ha podido agregar el medicamento.");
                 }
             }
+            ActualizarGrillaDrogueriasMedicamento();
         }
         private void RellenarCampos(Medicamento med)
         {
