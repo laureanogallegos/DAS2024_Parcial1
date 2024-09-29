@@ -8,11 +8,24 @@ using System.Threading.Tasks;
 
 namespace Controladora
 {
-    class ControladoraMedicamentos
+    public class ControladoraMedicamentos
     {
-        private static readonly Lazy<ControladoraMedicamentos> instance = new(() => new ControladoraMedicamentos());
-        public ControladoraMedicamentos Instance = new ControladoraMedicamentos();
+        private static readonly Lazy<ControladoraMedicamentos> instancia = new(() => new ControladoraMedicamentos());
+        public static ControladoraMedicamentos Instancia = instancia.Value;
         public List<Drogueria> droguerias = new List<Drogueria>();
+
+        public void ActualizarListaAModificar(Medicamento medicamento)
+        {
+            var medicamentoEncontrado = RecuperarMedicamentos().FirstOrDefault(x => x.NombreComercial == medicamento.NombreComercial);
+            foreach (Drogueria droga in medicamentoEncontrado.ListarDrogueria())
+            {
+                droguerias.Add(droga);
+            }
+        }
+        public void LimpiarDroguerias()
+        {
+            droguerias.Clear();
+        }
 
         public ReadOnlyCollection<Drogueria> RecuperarDroguerias()
         {
@@ -30,11 +43,26 @@ namespace Controladora
         {
             if (RecuperarMedicamentos().FirstOrDefault(x => x.NombreComercial == medicamento.NombreComercial) == null)
             {
-                RepositorioMedicamentos.Instancia.Agregar(medicamento);
-                foreach (var drogueria in droguerias) 
+                foreach (var drogueria in droguerias)
                 {
                     medicamento.AgregarDrogueria(drogueria);
                 }
+                RepositorioMedicamentos.Instancia.Agregar(medicamento);
+                droguerias.Clear();
+                return true;
+            }
+            return false;
+        }
+        public bool Modificar(Medicamento medicamentoViejo, Medicamento medicamentoNuevo)
+        {
+            var medicamentoEncontrado = RecuperarMedicamentos().FirstOrDefault(x => x.NombreComercial == medicamentoViejo.NombreComercial);
+            if (medicamentoEncontrado != null)
+            {
+                foreach (var drogueria in droguerias)
+                {
+                    medicamentoNuevo.AgregarDrogueria(drogueria);
+                }
+                RepositorioMedicamentos.Instancia.Modificar(medicamentoViejo, medicamentoNuevo);
                 return true;
             }
             return false;
@@ -47,30 +75,29 @@ namespace Controladora
                 return true;
             }
             return false;
-
         }
-        public bool Modificar(Medicamento medicamentoViejo, Medicamento medicamentoNuevo)
+        public bool AgregarDrogueria(Drogueria drogueria)
         {
-            if (RecuperarMedicamentos().FirstOrDefault(x => x.NombreComercial == medicamentoViejo.NombreComercial) == null)
+            if (droguerias.FirstOrDefault(x => x.Cuit == drogueria.Cuit) == null)
             {
-                RepositorioMedicamentos.Instancia.Modificar(medicamentoViejo,medicamentoNuevo);
+                droguerias.Add(drogueria);
                 return true;
             }
             return false;
         }
-        public void AgregarDrogueria(Drogueria drogueria)
+        public bool EliminarDrogueria(Drogueria drogueria)
         {
             if (droguerias.FirstOrDefault(x => x.Cuit == drogueria.Cuit) != null)
             {
-                droguerias.Add(drogueria);
-            }
-        }
-        public void EliminarDrogueria(Drogueria drogueria)
-        {
-            if (droguerias.FirstOrDefault(x => x.Cuit == drogueria.Cuit) == null)
-            {
                 droguerias.Remove(drogueria);
+                return true;
             }
+            return false;
+        }
+
+        public ReadOnlyCollection<Drogueria> ListarDrogueriasMedicamento()
+        {
+            return droguerias.AsReadOnly();
         }
     }
 }
