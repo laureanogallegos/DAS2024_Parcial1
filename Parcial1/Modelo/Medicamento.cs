@@ -22,14 +22,33 @@ namespace Modelo
             droguerias = new List<Drogueria>();
         }
 
-        public string AgregarMonodroga(Monodroga drogueria)
+        public string AgregarDrogueria(Drogueria drogueria)
         {
+            var drogueriaEncontrada = droguerias.FirstOrDefault(d => d.Cuit == drogueria.Cuit && d.Direccion == drogueria.Direccion && d.RazonSocial == drogueria.RazonSocial && d.Email == drogueria.Email);
+            if (drogueriaEncontrada == null)
+            {
+                droguerias.Add(drogueria);
+                return "Drogueria agregada";
+            }
+            else
+            {
+                return "La drogueria ya existe";
+            }
            
         }
 
         public string EliminarDrogueria(Drogueria drogueria)
         {
-
+            var drogueriaEncontrada = droguerias.FirstOrDefault(d => d.Cuit == drogueria.Cuit && d.Direccion == drogueria.Direccion && d.RazonSocial == drogueria.RazonSocial && d.Email == drogueria.Email);
+            if (drogueriaEncontrada != null)
+            {
+                droguerias.Remove(drogueria);
+                return "Drogueria eliminada";
+            }
+            else
+            {
+                return "Drogueria no existente";
+            }
         }
        
 
