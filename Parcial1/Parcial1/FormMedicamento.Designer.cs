@@ -68,7 +68,7 @@
             // 
             // cmbDroguerias
             // 
-            cmbDroguerias.DisplayMember = "razonsocial";
+            cmbDroguerias.DisplayMember = "cuit";
             cmbDroguerias.FormattingEnabled = true;
             cmbDroguerias.Location = new Point(450, 12);
             cmbDroguerias.Name = "cmbDroguerias";
