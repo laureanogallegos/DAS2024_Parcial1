@@ -9,7 +9,6 @@ namespace Modelo
         private static RepositorioDroguerias instancia;
         private List<Drogueria> droguerias;
         private IConfigurationRoot configuration;
-        private SqlConnection connection;
         private RepositorioDroguerias()
         {
             configuration = ConfigurationHelper.GetConfiguration("appsettings.json");
