@@ -52,15 +52,27 @@ namespace Modelo
                         var medicamento = new Medicamento
                         {
                             NombreComercial = reader["NOMBRE_COMERCIAL"].ToString(),
-                            EsVentaLibre = reader["ES_VENTA_LIBRE"].Equals(true),
+                            EsVentaLibre = Convert.ToBoolean(reader["ES_VENTA_LIBRE"].ToString()),
                             PrecioVenta = Convert.ToDecimal(reader["PRECIO_VENTA"].ToString()),
-                            Stock = Convert.ToInt16(reader["STOCK"].ToString()),
-                            StockMinimo = Convert.ToInt16(reader["STOCK_MINIMO"].ToString()),
-                            Monodroga = RepositorioMonodrogas.Instancia.Listar().FirstOrDefault(monodroga => monodroga.Nombre == reader["CodigoCategoria"].ToString())
-
-                            //medicamento.Monodrogas = reader["NOMBRE_MONODROGA"].ToString();
+                            Stock = Convert.ToInt32(reader["STOCK"].ToString()),
+                            StockMinimo = Convert.ToInt32(reader["STOCK_MINIMO"].ToString()),
+                            Monodroga = RepositorioMonodrogas.Instancia.Monodrogas.FirstOrDefault(monodroga => monodroga.Nombre == reader["NOMBRE_MONODROGA"].ToString())
                         };
                         medicamentos.Add(medicamento);
+
+                        using var cmd= new SqlCommand();
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.CommandText = "SP_RECUPERARDROGUERIASMEDICAMENTOS";
+                        cmd.Connection = connection;
+                        cmd.Parameters.Add("NOMBRE_COMERCIAL",System.Data.SqlDbType.NVarChar, 50).Value = medicamento.NombreComercial;
+                        var reader2 = cmd.ExecuteReader();
+                        while (reader2.Read())
+                        {
+                            var drogueria = new Drogueria();
+                            drogueria = RepositorioDroguerias.Instancia.Droguerias.FirstOrDefault(x => x.Cuit == Convert.ToInt64(reader2["CUIT"]));
+                            medicamento.AgregarDrogueria(drogueria);
+                        }
+                        
                     }
                     command.Connection.Close();
                 }
@@ -76,7 +88,7 @@ namespace Modelo
                 }
         }
 
-        private void Agregar(Medicamento medicamento)
+        public void Agregar(Medicamento medicamento)
         {
             var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
             connection.Open();
@@ -95,6 +107,20 @@ namespace Modelo
                 command.Parameters.Add("@STOCK_MINIMO", System.Data.SqlDbType.Int).Value = medicamento.StockMinimo;
                 command.Parameters.Add("@MONODROGA", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.Monodroga.Nombre;
                 command.ExecuteNonQuery();
+
+                using var cmd = new SqlCommand();
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandText = "SP_AGREGAR_DROGUERIASMEDICAMENTO";
+                cmd.Connection = connection;
+                cmd.Parameters.Add("NOMBRE_COMERCIAL", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.NombreComercial;
+                cmd.Parameters.Add("@CUIT", System.Data.SqlDbType.BigInt);
+                
+                foreach (var drogueria in medicamento.ListarDrogueria())
+                {
+                    cmd.Parameters["@CUIT"].Value = drogueria.Cuit;
+                    cmd.ExecuteNonQuery();
+                }
+
                 transaction.Commit();
                 connection.Close();
 
@@ -109,7 +135,7 @@ namespace Modelo
             }
         }
 
-        private void Modificar(Medicamento medicamento)
+        public void Modificar(Medicamento medicamento)
         {
             var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
             connection.Open();
@@ -128,6 +154,20 @@ namespace Modelo
                 command.Parameters.Add("@STOCK_MINIMO", System.Data.SqlDbType.Int).Value = medicamento.StockMinimo;
                 command.Parameters.Add("@MONODROGA", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.Monodroga.Nombre;
                 command.ExecuteNonQuery();
+
+                using var cmd = new SqlCommand();
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandText = "SP_AGREGAR_DROGUERIASMEDICAMENTO";
+                cmd.Connection = connection;
+                cmd.Parameters.Add("NOMBRE_COMERCIAL", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.NombreComercial;
+                cmd.Parameters.Add("@CUIT", System.Data.SqlDbType.BigInt);
+
+                foreach (var drogueria in medicamento.ListarDrogueria())
+                {
+                    cmd.Parameters["@CUIT"].Value = drogueria.Cuit;
+                    cmd.ExecuteNonQuery();
+                }
+
                 transaction.Commit();
                 connection.Close();
 
