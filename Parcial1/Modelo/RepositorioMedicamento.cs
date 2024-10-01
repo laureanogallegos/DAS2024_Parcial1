@@ -46,17 +46,16 @@ namespace Modelo
                 cmd.Parameters.Add("@Precio_Venta", System.Data.SqlDbType.Decimal).Value = medicamento.PrecioVenta;
                 cmd.Parameters.Add("@Stock", System.Data.SqlDbType.Int).Value = medicamento.StockAcual;
                 cmd.Parameters.Add("@Stock_Minimo", System.Data.SqlDbType.Int).Value = medicamento.StockMinimo;
-                cmd.Parameters.Add("@Monodroga", System.Data.SqlDbType.NVarChar, 50);
+                cmd.Parameters.Add("@Monodroga", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.Monodroga.Nombre;
                 cmd.ExecuteNonQuery();
-
                 cmd.Parameters.Clear();
+
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.CommandText = "sp_AgregarsMedicamentoMonodroga";
+                cmd.CommandText = "sp_AgregarDrogueriasMonodroga";
                 cmd.Parameters.Add("@Nombre_Comercial", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.NombreComercial;
-                cmd.Parameters.Add("@Nombre", System.Data.SqlDbType.NVarChar, 20).Value = medicamento.Monodroga.Nombre;
+                cmd.Parameters.Add("Cuit", System.Data.SqlDbType.BigInt);
                 foreach(var drogueria in medicamento.droguerias)
                 {
-                    cmd.Parameters["NombreComercial"].Value = medicamento.NombreComercial;
                     cmd.Parameters["Cuit"].Value = drogueria.Cuit;
                     cmd.ExecuteNonQuery();
                 }
@@ -124,16 +123,10 @@ namespace Modelo
                 cmd.CommandText = "sp_EliminarMedicamento";
                 cmd.Parameters.Add("@Nombre_Comercial", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.NombreComercial;             
                 cmd.ExecuteNonQuery();
-
-                cmd.Parameters.Clear();
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.CommandText = "sp_EliminarMedicamentoMonodroga";
-                cmd.Parameters.Add("@Nombre_Comercial", System.Data.SqlDbType.NVarChar, 50).Value = medicamento.NombreComercial;
-                cmd.Parameters.Add("@Nombre", System.Data.SqlDbType.NVarChar, 20).Value = medicamento.Monodroga.Nombre;
                 cmd.Transaction.Commit();
-                cmd.ExecuteNonQuery();
+                connection.Close();
                 medicamentos.Remove(medicamento);
-                return seElimino = true;
+                seElimino = true;
             }
             catch (Exception ex)
             {
@@ -162,6 +155,7 @@ namespace Modelo
                         PrecioVenta = Convert.ToDecimal(dr["PrecioVenta"]),
                         StockAcual = Convert.ToInt32(dr["StockAcual"]),
                         StockMinimo = Convert.ToInt32(dr["StockMinimo"]),
+                        Monodroga = RepositorioMonodrogas.Instancia.Monodrogas.FirstOrDefault(m => m.Nombre == dr["NombreMonodroga"].ToString()),
                     };
 
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -169,13 +163,14 @@ namespace Modelo
                     cmd.Parameters.Add("@NombreComercial", System.Data.SqlDbType.NVarChar, 50);
                     var drDrogueria = cmd.ExecuteReader();
                     while(drDrogueria.Read())
-                    {                      
-                        var drogueria = new Drogueria
-                        {                          
-                            Cuit = Convert.ToInt64(drDrogueria["Cuit"]),
-                        };
+                    {
+                        var cuitDrogueria = Convert.ToInt64(drDrogueria["Cuit"]);
+                        var drogueria = RepositorioDroguerias.Instancia.Droguerias.FirstOrDefault(x=> x.Cuit == cuitDrogueria);
+                        medicamento.AgregarDrogueria(drogueria);   
                     }
+                    medicamentos.Add(medicamento);
                 }
+                connection.Close();
             }
             catch 
             {
