@@ -53,10 +53,7 @@ namespace Modelo
         { 
             get 
             {
-                if (instancia == null)
-                {
-                    instancia ??= new RepositorioMonodrogas();
-                }                
+                instancia ??= new RepositorioMonodrogas();                
                 return instancia;
             }
         }

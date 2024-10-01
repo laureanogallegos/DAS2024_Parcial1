@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Modelo.Medicamento" Collapsed="true">
+    <Position X="5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAQIAIAQAAAAAAAAAAIEAAAAAAAAUAAAAQAAAAA=</HashCode>
+      <FileName>Medicamento.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modelo.Monodroga" Collapsed="true">
+    <Position X="7" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Monodroga.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modelo.RepositorioDroguerias" Collapsed="true">
+    <Position X="7.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JAQAAAQAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>RepositorioDroguerias.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Modelo.RepositorioMedicamentos" Collapsed="true">
+    <Position X="5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQAAAAAAAAAAAAAAAAAIAAAAACAAAAAAAABSBAEAAA=</HashCode>
+      <FileName>RepositorioMedicamentos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
