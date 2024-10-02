@@ -1,6 +1,6 @@
 ﻿namespace Controladora
 {
-    public class Class1
+    public class CRUDmedicamentos
     {
 
     }

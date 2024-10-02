@@ -37,11 +37,7 @@ namespace Modelo
                 }
                 command.Connection.Close();
             }
-            catch (SqlException ex)
-            {
-                connection.Close();
-                connection.Dispose();
-            }
+
             catch (Exception ex)
             {
                 connection.Close();
